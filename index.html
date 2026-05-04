@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HABIBI CLOTHING • Desert Drip</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+    :root {
+      --gold: #ffd700;
+      --red: #c41e3a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a0503;
+      color: #f5e8c7;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(#1f140a, #2c1b0f);
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: #f5e8c7;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      height: 90vh;
+      min-height: 500px;
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), 
+                  url('https://images.unsplash.com/photo-1600585154340-be6161a56a26?w=2000') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      margin-bottom: 10px;
+      text-shadow: 0 0 30px rgba(255,215,0,0.7);
+    }
+
+    .hero-content p {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+
+    .btn {
+      background: var(--red);
+      color: white;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: #ff4d6d;
+      transform: scale(1.08);
+    }
+
+    .section {
+      padding: 80px 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .product-card {
+      background: #1f140a;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s;
+      border: 1px solid #3d2212;
+    }
+
+    .product-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px rgba(196, 30, 58, 0.35);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin: 10px 0;
+    }
+
+    .add-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #1f140a;
+      font-weight: 600;
+      padding: 14px;
+    }
+
+    footer {
+      background: #0a0503;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background: #1f140a;
+      padding: 20px;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 999;
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <div class="nav-links">
+        <a href="#">Shop</a>
+        <a href="#">New Drops</a>
+        <a href="#">Desert Collection</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="hamburger" id="hamburger">☰</div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#">Shop</a>
+    <a href="#">New Drops</a>
+    <a href="#">Desert Collection</a>
+    <a href="#">Contact</a>
+  </div>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>HABIBI CLOTHING</h1>
+      <p>Desert Luxury • Street Royalty</p>
+      <button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior: 'smooth'})">
+        Shop Now
+      </button>
+    </div>
+  </div>
+
+  <div class="section" id="shop">
+    <h2>Latest Drops</h2>
+    <p style="text-align:center; font-size:1.2rem; opacity:0.8;">Wallahi, this drip hits different</p>
+
+    <div class="products">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1622445275576-721325763afe?w=800" alt="Hoodie">
+        <div class="info">
+          <h3>Desert Sand Hoodie</h3>
+          <p class="price">R899</p>
+          <button class="btn add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800" alt="Tshirt">
+        <div class="info">
+          <h3>Habibi Gold Tee</h3>
+          <p class="price">R449</p>
+          <button class="btn add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800" alt="Jacket">
+        <div class="info">
+          <h3>Emirates Bomber</h3>
+          <p class="price">R1499</p>
+          <button class="btn add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" alt="Pants">
+        <div class="info">
+          <h3>Sahara Cargo Pants</h3>
+          <p class="price">R799</p>
+          <button class="btn add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p style="font-size:2.2rem; margin-bottom:15px;">❤️ Habibi Clothing ❤️</p>
+    <p>Pretoria • Dubai • The World</p>
+    <p style="margin-top:30px; opacity:0.6; font-size:0.9rem;">© 2026 All Rights Reserved</p>
+  </footer>
+
+  <script>
+    // Mobile Menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+      hamburger.textContent = mobileMenu.classList.contains('show') ? '✕' : '☰';
+    });
+
+    // Add to Cart
+    let cartCount = 0;
+
+    function addToCart(btn) {
+      cartCount++;
+      
+      btn.textContent = "Added ✓";
+      btn.style.background = "#22c55e";
+      
+      // Notification
+      const notif = document.createElement('div');
+      notif.textContent = `Added to cart! (${cartCount})`;
+      notif.style.position = "fixed";
+      notif.style.bottom = "30px";
+      notif.style.right = "30px";
+      notif.style.background = "#c41e3a";
+      notif.style.color = "white";
+      notif.style.padding = "16px 24px";
+      notif.style.borderRadius = "50px";
+      notif.style.zIndex = "9999";
+      notif.style.boxShadow = "0 10px 30px rgba(0,0,0,0.5)";
+      document.body.appendChild(notif);
+
+      setTimeout(() => {
+        notif.remove();
+        btn.textContent = "Add to Cart";
+        btn.style.background = "#ffd700";
+      }, 1800);
+    }
+  </script>
+</body>
+</html>
