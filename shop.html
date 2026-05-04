@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - HABIBI CLOTHING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    header {
+      background: rgba(10,10,10,0.95);
+      padding: 18px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 2.2rem; 
+      letter-spacing: 3px;
+    }
+
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: var(--white); text-decoration: none; font-weight: 500; }
+    .nav-links a:hover { color: #aaa; }
+    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; }
+
+    .section { padding: 100px 20px; max-width: 1300px; margin: 0 auto; }
+    h2 { font-size: 3rem; text-align: center; margin-bottom: 60px; letter-spacing: 2px; }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: var(--gray);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s;
+    }
+
+    .product-card:hover { transform: translateY(-15px); }
+
+    .product-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 24px;
+      text-align: center;
+    }
+
+    .price {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 12px 0;
+    }
+
+    .add-btn {
+      width: 100%;
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      padding: 14px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="hamburger" id="hamburger">☰</div>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2>SHOP COLLECTION</h2>
+    <div class="products">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1622445275576-721325763afe?w=800" alt="Hoodie">
+        <div class="info">
+          <h3>Desert Sand Hoodie</h3>
+          <p class="price">R899</p>
+          <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800" alt="Tshirt">
+        <div class="info">
+          <h3>Signature Logo Tee</h3>
+          <p class="price">R449</p>
+          <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800" alt="Jacket">
+        <div class="info">
+          <h3>Emirates Bomber Jacket</h3>
+          <p class="price">R1499</p>
+          <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" alt="Pants">
+        <div class="info">
+          <h3>Sahara Cargo Pants</h3>
+          <p class="price">R799</p>
+          <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cartCount = 0;
+    function addToCart(btn) {
+      cartCount++;
+      const original = btn.textContent;
+      btn.textContent = "Added ✓";
+      btn.style.background = "#ccc";
+
+      const notif = document.createElement('div');
+      notif.textContent = `Added to cart (${cartCount})`;
+      notif.style.cssText = `position:fixed; bottom:30px; right:30px; background:white; color:black; padding:16px 26px; border-radius:50px; z-index:9999; font-weight:600;`;
+      document.body.appendChild(notif);
+
+      setTimeout(() => {
+        notif.remove();
+        btn.textContent = original;
+        btn.style.background = "white";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
