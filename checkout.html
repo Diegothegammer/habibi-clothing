@@ -4,59 +4,249 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - HABIBI CLOTHING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
-    :root { --black: #0a0a0a; --white: #f8f8f8; }
-    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); padding: 40px 20px; }
-    h1 { text-align: center; margin-bottom: 40px; }
-    form { max-width: 600px; margin: 0 auto; }
+
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(10,10,10,0.95);
+      padding: 18px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 2.3rem; 
+      letter-spacing: 4px;
+    }
+
+    .section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 60px;
+    }
+
+    h1 { font-size: 2.8rem; margin-bottom: 30px; text-align: center; grid-column: 1 / -1; }
+
+    .order-summary {
+      background: var(--gray);
+      padding: 30px;
+      border-radius: 16px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #333;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .total-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      font-size: 1.1rem;
+    }
+
+    .grand-total {
+      font-size: 1.6rem;
+      font-weight: 600;
+      border-top: 2px solid #444;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
     input, select {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      background: #1f1f1f;
+      padding: 16px;
+      background: #111;
       border: 1px solid #444;
       color: white;
       border-radius: 8px;
+      font-size: 1rem;
     }
-    button {
-      width: 100%;
+
+    .btn {
       padding: 18px;
-      background: white;
-      color: black;
       font-size: 1.2rem;
-      font-weight: bold;
+      font-weight: 600;
       border: none;
       border-radius: 50px;
-      margin-top: 20px;
       cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .place-order {
+      background: white;
+      color: black;
+    }
+
+    .cancel-btn {
+      background: transparent;
+      color: #ff4d6d;
+      border: 2px solid #ff4d6d;
+    }
+
+    @media (max-width: 900px) {
+      .section {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Checkout</h1>
-  <form onsubmit="handleCheckout(event)">
-    <input type="text" placeholder="Full Name" required>
-    <input type="email" placeholder="Email Address" required>
-    <input type="text" placeholder="Phone Number" required>
-    <input type="text" placeholder="Address" required>
-    <input type="text" placeholder="City" required>
-    <select required>
-      <option value="">Select Province</option>
-      <option>Gauteng</option>
-      <option>Western Cape</option>
-      <option>KwaZulu-Natal</option>
-    </select>
-    <button type="submit">Complete Order - Cash on Delivery</button>
-  </form>
+
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <a href="cart.html" style="color:white; font-size:1.3rem;">← Back to Cart</a>
+    </div>
+  </header>
+
+  <div class="section">
+    <h1>Checkout</h1>
+
+    <!-- Left Side: Form -->
+    <div>
+      <h2>Shipping Details</h2>
+      <form onsubmit="placeOrder(event)">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="tel" placeholder="Phone Number" required>
+        <input type="text" placeholder="Street Address" required>
+        <input type="text" placeholder="City" required>
+        
+        <select required>
+          <option value="">Select Province</option>
+          <option>Gauteng</option>
+          <option>Western Cape</option>
+          <option>KwaZulu-Natal</option>
+          <option>Eastern Cape</option>
+          <option>Limpopo</option>
+        </select>
+
+        <input type="text" placeholder="Postal Code" required>
+
+        <div style="margin-top: 30px;">
+          <button type="button" class="btn cancel-btn" onclick="cancelCheckout()">Cancel Order</button>
+          <button type="submit" class="btn place-order">Place Order • Cash on Delivery</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Side: Order Summary -->
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div id="order-items"></div>
+      
+      <div class="total-line">
+        <span>Subtotal</span>
+        <span id="subtotal">R0</span>
+      </div>
+      <div class="total-line">
+        <span>Shipping (Free)</span>
+        <span>R0</span>
+      </div>
+      
+      <div class="grand-total">
+        <span>Total</span>
+        <span id="grand-total">R0</span>
+      </div>
+    </div>
+  </div>
 
   <script>
-    function handleCheckout(e) {
-      e.preventDefault();
-      alert("✅ Order Placed Successfully!\n\nThank you habibi ❤️\nYour order will be prepared soon.");
-      localStorage.removeItem('habibiCart');
-      setTimeout(() => window.location.href = "index.html", 1500);
+    function loadOrderSummary() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      const container = document.getElementById('order-items');
+      let subtotal = 0;
+
+      container.innerHTML = '';
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p>Your cart is empty.</p>';
+        return;
+      }
+
+      cart.forEach(item => {
+        subtotal += item.price;
+        container.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}">
+            <div>
+              <h4>${item.name}</h4>
+              <p>R${item.price}</p>
+            </div>
+          </div>`;
+      });
+
+      document.getElementById('subtotal').textContent = `R${subtotal}`;
+      document.getElementById('grand-total').textContent = `R${subtotal}`;
     }
+
+    function placeOrder(e) {
+      e.preventDefault();
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+
+      alert("✅ Order Placed Successfully!\n\nThank you for shopping with Habibi ❤️\n\nYou will receive confirmation soon.");
+      localStorage.removeItem('habibiCart');
+      setTimeout(() => window.location.href = "index.html", 1800);
+    }
+
+    function cancelCheckout() {
+      if (confirm("Are you sure you want to cancel this checkout?")) {
+        window.location.href = "cart.html";
+      }
+    }
+
+    // Load summary when page opens
+    window.onload = loadOrderSummary;
   </script>
 </body>
 </html>
