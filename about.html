@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - HABIBI CLOTHING</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
-    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); }
-    header { background: rgba(10,10,10,0.95); padding: 18px 20px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333; }
-    .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 3px; }
-    .nav-links { display: flex; gap: 32px; }
-    .nav-links a { color: white; text-decoration: none; }
-    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; }
-
-    .section { padding: 120px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
-    h1 { font-size: 3.5rem; margin-bottom: 40px; }
-    p { font-size: 1.2rem; line-height: 1.8; margin-bottom: 25px; opacity: 0.9; }
-  </style>
-</head>
-<body>
-  <header>
+<header>
+  <div class="nav-container">
+    <div class="logo">HABIBI</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    
+    <div style="display:flex; align-items:center; gap:20px;">
+      <a href="cart.html" style="color:white; font-size:1.4rem; position:relative; text-decoration:none;">
+        🛒
+        <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:#c41e3a; color:white; font-size:0.8rem; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+      </a>
+      <div class="hamburger" id="hamburger">☰</div>
+    </div>
+  </div>
+</header>
     <div class="nav-container">
       <div class="logo">HABIBI</div>
       <div class="nav-links">
