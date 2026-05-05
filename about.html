@@ -1,24 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<header>
-  <div class="nav-container">
-    <div class="logo">HABIBI</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </div>
-    
-    <div style="display:flex; align-items:center; gap:20px;">
-      <a href="cart.html" style="color:white; font-size:1.4rem; position:relative; text-decoration:none;">
-        🛒
-        <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:#c41e3a; color:white; font-size:0.8rem; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
-      </a>
-      <div class="hamburger" id="hamburger">☰</div>
-    </div>
-  </div>
-</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - HABIBI CLOTHING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    header {
+      background: rgba(10,10,10,0.95);
+      padding: 18px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 2.3rem; 
+      letter-spacing: 4px;
+    }
+
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
+    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; color: white; }
+
+    .section {
+      padding: 120px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 40px;
+      letter-spacing: 3px;
+    }
+
+    .story {
+      font-size: 1.25rem;
+      line-height: 1.9;
+      max-width: 700px;
+      margin: 0 auto 50px;
+      opacity: 0.9;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 73px;
+      left: 0;
+      width: 100%;
+      background: #1f1f1f;
+      padding: 30px 20px;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 999;
+      border-top: 1px solid #333;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
     <div class="nav-container">
       <div class="logo">HABIBI</div>
       <div class="nav-links">
@@ -27,15 +96,54 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </div>
-      <div class="hamburger">☰</div>
+      <div style="display:flex; align-items:center; gap:20px;">
+        <a href="cart.html" style="color:white; font-size:1.5rem;">🛒</a>
+        <div class="hamburger" id="hamburger">☰</div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
     </div>
   </header>
 
   <div class="section">
     <h1>Our Story</h1>
-    <p>Born in the streets of Pretoria and inspired by the deserts of the Middle East, Habibi Clothing was created for those who move with confidence and style.</p>
-    <p>We blend luxury minimalism with street culture — bold but clean, timeless but current.</p>
-    <p>Wallahi, this is more than clothing. This is identity.</p>
+    
+    <p class="story">
+      Habibi Clothing was born in the streets of Pretoria.<br><br>
+      
+      What started as a small dream in the township yards and dusty streets of Gauteng has grown into a full streetwear movement. 
+      We saw young people hungry for clothing that represented their pride, their hustle, and their unique style — so we created it.
+    </p>
+
+    <p class="story">
+      Every piece is designed with the spirit of Pretoria in mind — bold, resilient, and unapologetically authentic. 
+      From the hoodies that kept us warm during winter grind sessions to the tees that turned heads in Sunnyside and Hatfield, 
+      Habibi is more than clothing.<br><br>
+      
+      <strong>This is identity. This is culture. This is Pretoria.</strong>
+    </p>
+
+    <p style="margin-top: 60px; font-size: 1.1rem; opacity: 0.7;">
+      Wallahi, we don’t follow trends.<br>
+      We create for the ones who move different.
+    </p>
   </div>
+
+  <script>
+    // Mobile Menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+      hamburger.textContent = mobileMenu.style.display === 'flex' ? '✕' : '☰';
+    });
+  </script>
 </body>
 </html>
