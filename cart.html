@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - HABIBI CLOTHING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); }
+    
+    header { background: rgba(10,10,10,0.95); padding: 18px 20px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333; }
+    .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 3px; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: white; text-decoration: none; }
+
+    .section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+    h1 { text-align: center; margin-bottom: 40px; font-size: 3rem; }
+
+    .cart-item {
+      display: flex;
+      background: var(--gray);
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .cart-item img { width: 180px; height: 180px; object-fit: cover; }
+    .cart-details { padding: 20px; flex: 1; }
+    .remove-btn { color: #ff4d6d; cursor: pointer; margin-top: 10px; }
+
+    .total {
+      font-size: 1.8rem;
+      text-align: right;
+      margin: 30px 0;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 18px;
+      background: white;
+      color: black;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="cart.html" style="color:white; font-size:1.4rem;">🛒 <span id="cart-count">0</span></a>
+    </div>
+  </header>
+
+  <div class="section">
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
+    <div class="total">Total: <span id="cart-total">R0</span></div>
+    <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+
+  <script>
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      const container = document.getElementById('cart-items');
+      let total = 0;
+
+      container.innerHTML = '';
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p style="text-align:center; font-size:1.3rem;">Your cart is empty, habibi 😔</p>';
+        document.getElementById('cart-total').textContent = 'R0';
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        container.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}">
+            <div class="cart-details">
+              <h3>${item.name}</h3>
+              <p>R${item.price}</p>
+              <span class="remove-btn" onclick="removeFromCart(${index})">Remove</span>
+            </div>
+          </div>`;
+      });
+
+      document.getElementById('cart-total').textContent = `R${total}`;
+      updateCartCount();
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('habibiCart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+
+    function proceedToCheckout() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      if (cart.length === 0) return alert("Cart is empty!");
+      window.location.href = "checkout.html";
+    }
+
+    // Load cart when page opens
+    window.onload = loadCart;
+  </script>
+</body>
+</html>
