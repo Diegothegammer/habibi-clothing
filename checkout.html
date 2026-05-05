@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - HABIBI CLOTHING</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); padding: 40px 20px; }
+    h1 { text-align: center; margin-bottom: 40px; }
+    form { max-width: 600px; margin: 0 auto; }
+    input, select {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      background: #1f1f1f;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 18px;
+      background: white;
+      color: black;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Checkout</h1>
+  <form onsubmit="handleCheckout(event)">
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email Address" required>
+    <input type="text" placeholder="Phone Number" required>
+    <input type="text" placeholder="Address" required>
+    <input type="text" placeholder="City" required>
+    <select required>
+      <option value="">Select Province</option>
+      <option>Gauteng</option>
+      <option>Western Cape</option>
+      <option>KwaZulu-Natal</option>
+    </select>
+    <button type="submit">Complete Order - Cash on Delivery</button>
+  </form>
+
+  <script>
+    function handleCheckout(e) {
+      e.preventDefault();
+      alert("✅ Order Placed Successfully!\n\nThank you habibi ❤️\nYour order will be prepared soon.");
+      localStorage.removeItem('habibiCart');
+      setTimeout(() => window.location.href = "index.html", 1500);
+    }
+  </script>
+</body>
+</html>
