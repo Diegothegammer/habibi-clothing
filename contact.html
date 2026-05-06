@@ -3,61 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact - HABIBI CLOTHING</title>
+  <title>Contact Us - HABIBI CLOTHING</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
-    :root { --black: #0a0a0a; --white: #f8f8f8; }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); }
-    header { background: rgba(10,10,10,0.95); padding: 18px 20px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333; }
-    .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 3px; }
-    .nav-links { display: flex; gap: 32px; }
-    .nav-links a { color: white; text-decoration: none; }
-
-    .section { padding: 120px 20px; max-width: 700px; margin: 0 auto; }
-    h1 { text-align: center; font-size: 3rem; margin-bottom: 60px; }
-    form { display: flex; flex-direction: column; gap: 20px; }
-    input, textarea {
-      padding: 16px;
-      background: #1f1f1f;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 8px;
-      font-family: inherit;
+    :root {
+      --gold: #d4af37;
+      --dark: #0f0a1f;
+      --accent: #ff4d94;
     }
-    button {
-      padding: 16px;
-      background: white;
-      color: black;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 50px;
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--dark);
+      color: #e0d9d0;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 10, 31, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--gold);
+    }
+
+    .nav-links a {
+      color: #e0d9d0;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .contact-container {
+      max-width: 800px;
+      margin: 120px auto 80px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: #b8a88f;
+      margin-bottom: 50px;
+    }
+
+    /* Systeme.io Form Container */
+    #systeme-form {
+      background: #1a1433;
+      border-radius: 16px;
+      padding: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem;
+      background: #0a0619;
+      font-size: 1rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="nav-container">
-      <div class="logo">HABIBI</div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </div>
-    </div>
-  </header>
 
-  <div class="section">
+  <nav>
+    <div class="logo">HABIBI</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <div class="contact-container">
     <h1>Get In Touch</h1>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Email Address" required>
-      <textarea rows="6" placeholder="Your Message..." required></textarea>
-      <button type="button" onclick="alert('Message sent! Habibi, we will reply soon ❤️')">Send Message</button>
-    </form>
+    <p class="subtitle">We'd love to hear from you. Send us a message.</p>
+
+    <!-- Your Systeme.io Form -->
+    <div id="systeme-form">
+      <script id="form-script-tag-23909085" 
+              src="https://trade-bet.systeme.io/public/remote/page/406542816a559f89a1cc65e3c8ff229957b787a5.js">
+      </script>
+    </div>
   </div>
+
+  <footer>
+    <p>&copy; 2026 Habibi Clothing • Pretoria, South Africa</p>
+  </footer>
+
 </body>
 </html>
