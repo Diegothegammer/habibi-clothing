@@ -127,6 +127,14 @@
       border: 2px solid #ff4d6d;
     }
 
+    #shipping-info {
+      margin: 20px 0;
+      padding: 18px;
+      background: #111;
+      border-radius: 12px;
+      border: 1px solid #333;
+    }
+
     @media (max-width: 900px) {
       .section {
         grid-template-columns: 1fr;
@@ -151,22 +159,30 @@
     <div>
       <h2>Shipping Details</h2>
       <form onsubmit="placeOrder(event)">
-        <input type="text" placeholder="Full Name" required>
-        <input type="email" placeholder="Email Address" required>
-        <input type="tel" placeholder="Phone Number" required>
-        <input type="text" placeholder="Street Address" required>
-        <input type="text" placeholder="City" required>
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required>
+        <input type="text" id="address" placeholder="Street Address" required>
         
-        <select required>
+        <input type="text" id="city" placeholder="City / Suburb (e.g. Pretoria, Midrand, Sandton)" required onkeyup="calculateShipping()">
+        
+        <select id="province" onchange="calculateShipping()" required>
           <option value="">Select Province</option>
-          <option>Gauteng</option>
-          <option>Western Cape</option>
-          <option>KwaZulu-Natal</option>
-          <option>Eastern Cape</option>
-          <option>Limpopo</option>
+          <option value="Gauteng">Gauteng</option>
+          <option value="Western Cape">Western Cape</option>
+          <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+          <option value="Eastern Cape">Eastern Cape</option>
+          <option value="Limpopo">Limpopo</option>
+          <option value="Other">Other</option>
         </select>
 
-        <input type="text" placeholder="Postal Code" required>
+        <input type="text" id="postal" placeholder="Postal Code" required>
+
+        <!-- Live Shipping Display -->
+        <div id="shipping-info" style="display: none;">
+          <strong>Shipping Cost: <span id="shipping-cost" style="color:#4ade80;">R0</span></strong><br>
+          <small id="shipping-note"></small>
+        </div>
 
         <div style="margin-top: 30px;">
           <button type="button" class="btn cancel-btn" onclick="cancelCheckout()">Cancel Order</button>
@@ -185,8 +201,8 @@
         <span id="subtotal">R0</span>
       </div>
       <div class="total-line">
-        <span>Shipping (Free)</span>
-        <span>R0</span>
+        <span id="shipping-label">Shipping</span>
+        <span id="shipping-total">R0</span>
       </div>
       
       <div class="grand-total">
@@ -197,56 +213,53 @@
   </div>
 
   <script>
+    function calculateShipping() {
+      const city = document.getElementById('city').value.trim().toLowerCase();
+      const province = document.getElementById('province').value;
+      const shippingInfo = document.getElementById('shipping-info');
+      const shippingCostEl = document.getElementById('shipping-cost');
+      const shippingNote = document.getElementById('shipping-note');
+      const shippingLabel = document.getElementById('shipping-label');
+      const shippingTotal = document.getElementById('shipping-total');
+
+      let cost = 0;
+      let note = "";
+
+      if (city.includes("pretoria") || city === "pta") {
+        cost = 60;
+        note = "Local Pretoria Delivery (2kg)";
+      } 
+      else if (province === "Gauteng") {
+        cost = 95;
+        note = "Gauteng Area Delivery";
+      } 
+      else if (province !== "") {
+        cost = 165;
+        note = "National Delivery";
+      }
+
+      if (cost > 0) {
+        shippingInfo.style.display = "block";
+        shippingCostEl.textContent = `R${cost}`;
+        shippingNote.textContent = note;
+        shippingLabel.textContent = "Shipping";
+        shippingTotal.textContent = `R${cost}`;
+      } else {
+        shippingInfo.style.display = "none";
+        shippingTotal.textContent = "R0";
+      }
+
+      updateGrandTotal();
+    }
+
+    function updateGrandTotal() {
+      const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('R', '')) || 0;
+      const shipping = parseFloat(document.getElementById('shipping-total').textContent.replace('R', '')) || 0;
+      document.getElementById('grand-total').textContent = `R${subtotal + shipping}`;
+    }
+
     function loadOrderSummary() {
       const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
       const container = document.getElementById('order-items');
-      let subtotal = 0;
-
-      container.innerHTML = '';
-
-      if (cart.length === 0) {
-        container.innerHTML = '<p>Your cart is empty.</p>';
-        return;
-      }
-
-      cart.forEach(item => {
-        subtotal += item.price;
-        container.innerHTML += `
-          <div class="cart-item">
-            <img src="${item.img}" alt="${item.name}">
-            <div>
-              <h4>${item.name}</h4>
-              <p>R${item.price}</p>
-            </div>
-          </div>`;
-      });
-
-      document.getElementById('subtotal').textContent = `R${subtotal}`;
-      document.getElementById('grand-total').textContent = `R${subtotal}`;
-    }
-
-    function placeOrder(e) {
-      e.preventDefault();
-      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
-      
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-      }
-
-      alert("✅ Order Placed Successfully!\n\nThank you for shopping with Habibi ❤️\n\nYou will receive confirmation soon.");
-      localStorage.removeItem('habibiCart');
-      setTimeout(() => window.location.href = "index.html", 1800);
-    }
-
-    function cancelCheckout() {
-      if (confirm("Are you sure you want to cancel this checkout?")) {
-        window.location.href = "cart.html";
-      }
-    }
-
-    // Load summary when page opens
-    window.onload = loadOrderSummary;
-  </script>
-</body>
+      let subtotal = y>
 </html>
