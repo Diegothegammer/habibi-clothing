@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - HABIBI CLOTHING</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+    header {
+      background: rgba(10,10,10,0.97);
+      padding: 14px 16px;
+      border-bottom: 1px solid #333;
+    }
+    .nav-container {
+      max-width: 500px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 2px; text-decoration: none; color: white; }
+    .nav-container a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
+
+    .wrap {
+      max-width: 440px;
+      margin: 40px auto 60px;
+      padding: 0 16px;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; letter-spacing: 1px; }
+    .sub { opacity: 0.65; margin-bottom: 28px; font-size: 0.95rem; }
+
+    form { display: flex; flex-direction: column; gap: 12px; }
+    label { font-size: 0.8rem; opacity: 0.7; margin-bottom: -4px; }
+    input, select {
+      padding: 14px 16px;
+      background: #111;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      width: 100%;
+    }
+    input::placeholder { color: #777; }
+    select {
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 15px;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    .msg { margin-top: 14px; font-size: 0.9rem; text-align: center; }
+    .msg.error { color: #ff6b7a; }
+    .msg.ok { color: #6bffb0; }
+
+    .switch { text-align: center; margin-top: 24px; font-size: 0.95rem; opacity: 0.8; }
+    .switch a { color: white; font-weight: 600; }
+
+    .note {
+      margin-top: 28px;
+      padding: 14px;
+      background: #151515;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">HABIBI</a>
+      <a href="login.html">Login</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1>Create Account</h1>
+    <p class="sub">Save your details for faster checkout</p>
+
+    <form id="signupForm">
+      <label>Full Name</label>
+      <input type="text" id="name" required placeholder="Your full name" autocomplete="name">
+
+      <label>Email</label>
+      <input type="email" id="email" required placeholder="you@email.com" autocomplete="email">
+
+      <label>Phone</label>
+      <input type="tel" id="phone" required placeholder="0XX XXX XXXX" autocomplete="tel">
+
+      <label>Password</label>
+      <input type="password" id="password" required placeholder="Min 6 characters" minlength="6" autocomplete="new-password">
+
+      <label>Street Address</label>
+      <input type="text" id="address" required placeholder="Street address" autocomplete="street-address">
+
+      <label>City</label>
+      <input type="text" id="city" required placeholder="City" autocomplete="address-level2">
+
+      <label>Province</label>
+      <select id="province" required>
+        <option value="">Select Province</option>
+        <option>Gauteng</option>
+        <option>Western Cape</option>
+        <option>KwaZulu-Natal</option>
+        <option>Eastern Cape</option>
+        <option>Limpopo</option>
+        <option>Mpumalanga</option>
+        <option>North West</option>
+        <option>Free State</option>
+        <option>Northern Cape</option>
+      </select>
+
+      <label>Postal Code</label>
+      <input type="text" id="postal" required placeholder="Postal code" autocomplete="postal-code">
+
+      <button type="submit" class="btn">Create Account</button>
+    </form>
+
+    <p class="msg" id="msg"></p>
+    <p class="switch">Already have an account? <a href="login.html">Login</a></p>
+
+    <div class="note">
+      Demo accounts are stored only in your browser. This is not a secure production system. For real stores use a proper backend (Firebase, Supabase, etc.).
+    </div>
+  </div>
+
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem('habibiCurrentUser')) {
+      window.location.href = 'profile.html';
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msg = document.getElementById('msg');
+
+      const user = {
+        id: Date.now().toString(),
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim().toLowerCase(),
+        phone: document.getElementById('phone').value.trim(),
+        password: document.getElementById('password').value,
+        address: document.getElementById('address').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        province: document.getElementById('province').value,
+        postal: document.getElementById('postal').value.trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      if (user.password.length < 6) {
+        msg.className = 'msg error';
+        msg.textContent = 'Password must be at least 6 characters.';
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('habibiUsers') || '[]');
+
+      if (users.some(u => u.email === user.email)) {
+        msg.className = 'msg error';
+        msg.textContent = 'An account with this email already exists.';
+        return;
+      }
+
+      users.push(user);
+      localStorage.setItem('habibiUsers', JSON.stringify(users));
+      localStorage.setItem('habibiCurrentUser', user.email);
+
+      msg.className = 'msg ok';
+      msg.textContent = 'Account created! Redirecting...';
+      setTimeout(() => window.location.href = 'profile.html', 1000);
+    });
+  </script>
+</body>
+</html>

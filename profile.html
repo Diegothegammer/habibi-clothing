@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - HABIBI CLOTHING</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+    header {
+      background: rgba(10,10,10,0.97);
+      padding: 14px 16px;
+      border-bottom: 1px solid #333;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      max-width: 800px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 2px; text-decoration: none; color: white; }
+    .nav-links { display: flex; gap: 18px; align-items: center; }
+    .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
+
+    .wrap { max-width: 800px; margin: 0 auto; padding: 32px 16px 60px; }
+
+    .profile-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .profile-head h1 { font-size: 1.7rem; letter-spacing: 1px; }
+    .profile-head .email { opacity: 0.6; font-size: 0.9rem; margin-top: 4px; }
+
+    .logout-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid #555;
+      color: white;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .stat {
+      background: var(--gray);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .stat .num { font-size: 1.4rem; font-weight: 600; }
+    .stat .label { font-size: 0.75rem; opacity: 0.55; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .card {
+      background: var(--gray);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .card h2 { font-size: 1.1rem; margin-bottom: 16px; letter-spacing: 0.5px; }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 0.95rem;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row span:first-child { opacity: 0.55; }
+
+    .order {
+      background: #161616;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .order-id { font-size: 0.8rem; opacity: 0.5; }
+    .order-date { font-size: 0.85rem; opacity: 0.7; }
+    .order-total { font-weight: 600; font-size: 1.05rem; }
+    .order-items { font-size: 0.9rem; opacity: 0.85; line-height: 1.5; }
+
+    .empty { opacity: 0.5; text-align: center; padding: 30px 10px; }
+
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .actions a {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .actions .primary { background: white; color: black; }
+    .actions .ghost { border: 1px solid #555; color: white; }
+
+    @media (max-width: 500px) {
+      .stats { grid-template-columns: 1fr; }
+      .stat .num { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">HABIBI</a>
+      <div class="nav-links">
+        <a href="shop.html">Shop</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap" id="content">
+    <!-- Filled by JS -->
+  </div>
+
+  <script>
+    const email = localStorage.getItem('habibiCurrentUser');
+    if (!email) {
+      window.location.href = 'login.html';
+    }
+
+    const users = JSON.parse(localStorage.getItem('habibiUsers') || '[]');
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      localStorage.removeItem('habibiCurrentUser');
+      window.location.href = 'login.html';
+    }
+
+    const allOrders = JSON.parse(localStorage.getItem('habibiOrders') || '[]');
+    const myOrders = allOrders.filter(o => o.userEmail === email).sort((a, b) => new Date(b.date) - new Date(a.date));
+    const totalSpent = myOrders.reduce((sum, o) => sum + o.total, 0);
+
+    function logout() {
+      localStorage.removeItem('habibiCurrentUser');
+      window.location.href = 'index.html';
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    let ordersHtml = '';
+    if (myOrders.length === 0) {
+      ordersHtml = '<p class="empty">No orders yet. Go shop something 🔥</p>';
+    } else {
+      ordersHtml = myOrders.map(o => `
+        <div class="order">
+          <div class="order-top">
+            <span class="order-date">${formatDate(o.date)}</span>
+            <span class="order-total">R${o.total}</span>
+          </div>
+          <div class="order-items">${o.items.map(i => i.name).join(' · ')}</div>
+          <div class="order-id">Order #${o.id}</div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('content').innerHTML = `
+      <div class="profile-head">
+        <div>
+          <h1>${user.name}</h1>
+          <p class="email">${user.email}</p>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="num">${myOrders.length}</div>
+          <div class="label">Orders</div>
+        </div>
+        <div class="stat">
+          <div class="num">R${totalSpent}</div>
+          <div class="label">Total Spent</div>
+        </div>
+        <div class="stat">
+          <div class="num">${user.city || '—'}</div>
+          <div class="label">City</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Shipping Details</h2>
+        <div class="detail-row"><span>Name</span><span>${user.name}</span></div>
+        <div class="detail-row"><span>Phone</span><span>${user.phone}</span></div>
+        <div class="detail-row"><span>Address</span><span>${user.address}</span></div>
+        <div class="detail-row"><span>City</span><span>${user.city}</span></div>
+        <div class="detail-row"><span>Province</span><span>${user.province}</span></div>
+        <div class="detail-row"><span>Postal</span><span>${user.postal}</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Order History</h2>
+        ${ordersHtml}
+      </div>
+
+      <div class="actions">
+        <a href="shop.html" class="primary">Continue Shopping</a>
+        <a href="cart.html" class="ghost">View Cart</a>
+      </div>
+    `;
+  </script>
+</body>
+</html>
