@@ -48,7 +48,7 @@
     }
     .cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
     .cart-item h4 { font-size: 0.9rem; margin-bottom: 3px; }
-    .cart-item p { font-size: 0.9rem; opacity: 0.85; }
+    .cart-item p { font-size: 0.85rem; opacity: 0.85; }
     .total-line { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.95rem; }
     .grand-total {
       font-size: 1.3rem; font-weight: 600; border-top: 2px solid #444;
@@ -59,7 +59,6 @@
       padding: 14px 16px; background: #111; border: 1px solid #444; color: white;
       border-radius: 10px; font-size: 1rem; font-family: inherit; width: 100%; -webkit-appearance: none;
     }
-    input::placeholder { color: #777; }
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
@@ -89,15 +88,12 @@
 
   <div class="section">
     <h1>Checkout</h1>
-
     <div>
       <div id="loggedSection">
         <div class="logged-banner">
           ✅ Logged in as <strong id="userNameDisplay"></strong>
           <div class="logged-details" id="userDetailsDisplay"></div>
-          <div style="margin-top:10px; font-size:0.85rem;">
-            <a href="profile.html">View profile</a>
-          </div>
+          <div style="margin-top:10px; font-size:0.85rem;"><a href="profile.html">View profile</a></div>
         </div>
         <h2>Confirm Order</h2>
         <p style="opacity:0.7; margin-bottom:16px; font-size:0.95rem;">Your saved shipping details will be used. Cash on delivery.</p>
@@ -113,11 +109,11 @@
         </div>
         <h2>Shipping Details</h2>
         <form id="guestForm">
-          <input type="text" id="gName" placeholder="Full Name" required autocomplete="name">
-          <input type="email" id="gEmail" placeholder="Email Address" required autocomplete="email">
-          <input type="tel" id="gPhone" placeholder="Phone Number" required autocomplete="tel">
-          <input type="text" id="gAddress" placeholder="Street Address" required autocomplete="street-address">
-          <input type="text" id="gCity" placeholder="City" required autocomplete="address-level2">
+          <input type="text" id="gName" placeholder="Full Name" required>
+          <input type="email" id="gEmail" placeholder="Email Address" required>
+          <input type="tel" id="gPhone" placeholder="Phone Number" required>
+          <input type="text" id="gAddress" placeholder="Street Address" required>
+          <input type="text" id="gCity" placeholder="City" required>
           <select id="gProvince" required>
             <option value="">Select Province</option>
             <option>Gauteng</option>
@@ -130,7 +126,7 @@
             <option>Free State</option>
             <option>Northern Cape</option>
           </select>
-          <input type="text" id="gPostal" placeholder="Postal Code" required autocomplete="postal-code">
+          <input type="text" id="gPostal" placeholder="Postal Code" required>
           <div class="btn-row">
             <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order • Cash on Delivery</button>
             <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel Order</button>
@@ -176,11 +172,17 @@
       }
 
       cart.forEach((item) => {
-        cartTotal += item.price;
+        const qty = item.qty || 1;
+        const line = item.price * qty;
+        cartTotal += line;
+        const color = item.color || "";
         container.innerHTML += `
           <div class="cart-item">
             <img src="${item.img}" alt="${item.name}">
-            <div><h4>${item.name}</h4><p>R${item.price}</p></div>
+            <div>
+              <h4>${item.name}</h4>
+              <p>${color ? color + " · " : ""}Qty ${qty} · R${line}</p>
+            </div>
           </div>`;
       });
 
@@ -198,7 +200,13 @@
       const orderId = await createOrder({
         userId: userId || null,
         userEmail: userEmail || shipping.email || null,
-        items: cart.map((i) => ({ name: i.name, price: i.price, id: i.id })),
+        items: cart.map((i) => ({
+          name: i.name,
+          price: i.price,
+          id: i.id,
+          color: i.color || null,
+          qty: i.qty || 1
+        })),
         total: cartTotal,
         shipping
       });
