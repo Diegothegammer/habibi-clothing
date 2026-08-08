@@ -104,8 +104,13 @@
       saveUserProfile
     } from "./js/firebase.js";
 
+    // Prevent redirect while we are still saving profile to the database
+    let busySigningUp = false;
+
     onAuthStateChanged(auth, (user) => {
-      if (user) window.location.href = "profile.html";
+      if (user && !busySigningUp) {
+        window.location.href = "profile.html";
+      }
     });
 
     const form = document.getElementById("signupForm");
@@ -118,6 +123,7 @@
       msg.className = "msg";
       btn.disabled = true;
       btn.textContent = "Creating...";
+      busySigningUp = true;
 
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim().toLowerCase();
@@ -129,26 +135,50 @@
       const postal = document.getElementById("postal").value.trim();
 
       try {
+        // 1) Create auth account
         const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+        // 2) Set display name
         await updateProfile(cred.user, { displayName: name });
+
+        // 3) Save full profile to Realtime Database (must finish before redirect)
+        btn.textContent = "Saving profile...";
         await saveUserProfile(cred.user.uid, {
-          name, email, phone, address, city, province, postal,
+          name,
+          email,
+          phone,
+          address,
+          city,
+          province,
+          postal,
           createdAt: new Date().toISOString()
         });
+
         msg.className = "msg ok";
         msg.textContent = "Account created! Redirecting...";
-        setTimeout(() => (window.location.href = "profile.html"), 800);
+        busySigningUp = false;
+        window.location.href = "profile.html";
       } catch (err) {
+        console.error("Signup error:", err);
+        busySigningUp = false;
         msg.className = "msg error";
+
         if (err.code === "auth/email-already-in-use") {
           msg.textContent = "This email is already registered. Try logging in.";
         } else if (err.code === "auth/weak-password") {
           msg.textContent = "Password should be at least 6 characters.";
         } else if (err.code === "auth/invalid-email") {
           msg.textContent = "Please enter a valid email.";
+        } else if (
+          err.code === "PERMISSION_DENIED" ||
+          (err.message && err.message.includes("PERMISSION_DENIED"))
+        ) {
+          msg.textContent =
+            "Database blocked the write. Open Firebase → Realtime Database → Rules and allow write (see instructions).";
         } else {
           msg.textContent = err.message || "Something went wrong. Try again.";
         }
+
         btn.disabled = false;
         btn.textContent = "Create Account";
       }
