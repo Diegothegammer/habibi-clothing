@@ -15,11 +15,13 @@
       font-family: 'Poppins', sans-serif;
       background: var(--black);
       color: var(--white);
+      overflow-x: hidden;
     }
 
     header {
-      background: rgba(10,10,10,0.95);
-      padding: 18px 20px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 16px;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -32,56 +34,112 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
 
-    .logo { 
-      font-family: 'Playfair Display', serif; 
-      font-size: 2.3rem; 
-      letter-spacing: 4px;
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 5vw, 2.3rem);
+      letter-spacing: 2px;
+      white-space: nowrap;
     }
 
-    .nav-links { display: flex; gap: 32px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
-    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; color: white; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .cart-link {
+      color: white;
+      font-size: 1.35rem;
+      position: relative;
+      text-decoration: none;
+      padding: 6px;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background: #c41e3a;
+      color: white;
+      font-size: 0.7rem;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      padding: 8px;
+      line-height: 1;
+    }
 
     .section {
-      padding: 120px 20px;
-      max-width: 900px;
+      padding: 60px 20px 80px;
+      max-width: 720px;
       margin: 0 auto;
       text-align: center;
     }
 
     h1 {
-      font-size: 3.5rem;
-      margin-bottom: 40px;
-      letter-spacing: 3px;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      margin-bottom: 28px;
+      letter-spacing: 2px;
     }
 
     .story {
-      font-size: 1.25rem;
-      line-height: 1.9;
-      max-width: 700px;
-      margin: 0 auto 50px;
-      opacity: 0.9;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.85;
+      margin: 0 auto 36px;
+      opacity: 0.92;
     }
 
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 73px;
+      top: 57px;
       left: 0;
       width: 100%;
-      background: #1f1f1f;
-      padding: 30px 20px;
+      background: #141414;
+      padding: 24px 20px 32px;
       flex-direction: column;
-      gap: 25px;
+      gap: 8px;
       z-index: 999;
       border-top: 1px solid #333;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
     }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.15rem;
+      padding: 14px 12px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .mobile-menu a:active { background: #222; }
+
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 48px 20px;
+    }
+    footer p:first-child { font-size: 1.5rem; margin-bottom: 6px; }
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: block; }
+      .section { padding: 48px 18px 64px; }
     }
   </style>
 </head>
@@ -96,9 +154,12 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </div>
-      <div style="display:flex; align-items:center; gap:20px;">
-        <a href="cart.html" style="color:white; font-size:1.5rem;">🛒</a>
-        <div class="hamburger" id="hamburger">☰</div>
+      <div class="nav-right">
+        <a href="cart.html" class="cart-link">
+          🛒
+          <span id="cart-count">0</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
       </div>
     </div>
 
@@ -116,7 +177,6 @@
     
     <p class="story">
       Habibi Clothing was born in the streets of Pretoria.<br><br>
-      
       What started as a small dream in the township yards and dusty streets of Gauteng has grown into a full streetwear movement. 
       We saw young people hungry for clothing that represented their pride, their hustle, and their unique style — so we created it.
     </p>
@@ -125,34 +185,47 @@
       Every piece is designed with the spirit of Pretoria in mind — bold, resilient, and unapologetically authentic. 
       From the hoodies that kept us warm during winter grind sessions to the tees that turned heads in Sunnyside and Hatfield, 
       Habibi is more than clothing.<br><br>
-      
       <strong>This is identity. This is culture. This is Pretoria.</strong>
     </p>
 
-    <p style="margin-top: 60px; font-size: 1.1rem; opacity: 0.7;">
+    <p style="margin-top: 40px; font-size: 1.05rem; opacity: 0.7; line-height: 1.6;">
       Wallahi, we don’t follow trends.<br>
       We create for the ones who move different.
     </p>
   </div>
 
-<footer style="background:#000; text-align:center; padding:60px 20px;">
-  <p style="font-size:2rem;">HABIBI CLOTHING</p>
-  <p>Pretoria Streetwear</p>
-  <p style="margin-top:40px; font-size:0.9rem; opacity:0.6;">
-    © 2026 Habibi Clothing. All Rights Reserved.<br>
-    A Pretoria Born Brand • Established 2024
-  </p>
-</footer>
+  <footer>
+    <p>HABIBI CLOTHING</p>
+    <p>Pretoria Streetwear</p>
+    <p style="margin-top:28px; font-size:0.85rem; opacity:0.55;">
+      © 2026 Habibi Clothing. All Rights Reserved.<br>
+      A Pretoria Born Brand • Established 2024
+    </p>
+  </footer>
   
   <script>
-    // Mobile Menu
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
     hamburger.addEventListener('click', () => {
-      mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
-      hamburger.textContent = mobileMenu.style.display === 'flex' ? '✕' : '☰';
+      const isOpen = mobileMenu.style.display === 'flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      hamburger.textContent = isOpen ? '☰' : '✕';
     });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        hamburger.textContent = '☰';
+      });
+    });
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = cart.length;
+    }
+    window.onload = updateCartCount;
   </script>
 </body>
 </html>

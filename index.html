@@ -15,12 +15,13 @@
       font-family: 'Poppins', sans-serif;
       background: var(--black);
       color: var(--white);
+      overflow-x: hidden;
     }
 
     header {
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(10px);
-      padding: 18px 20px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 16px;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -33,108 +34,202 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
 
     .logo { 
       font-family: 'Playfair Display', serif; 
-      font-size: 2.3rem; 
-      letter-spacing: 4px;
+      font-size: clamp(1.5rem, 5vw, 2.3rem); 
+      letter-spacing: 2px;
+      white-space: nowrap;
     }
 
-    .nav-links { display: flex; gap: 32px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
-    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; color: white; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .nav-links a:hover { opacity: 0.8; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cart-link {
+      color: white;
+      font-size: 1.35rem;
+      position: relative;
+      text-decoration: none;
+      padding: 6px;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background: #c41e3a;
+      color: white;
+      font-size: 0.7rem;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      padding: 8px;
+      line-height: 1;
+    }
 
     /* Hero */
     .hero {
-      height: 100vh;
-      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), 
+      min-height: 85vh;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)), 
                   url('https://images.unsplash.com/photo-1600585154340-be6161a56a26?w=2000') center/cover;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 40px 20px;
     }
 
     .hero-content h1 {
-      font-size: clamp(3.5rem, 10vw, 7rem);
-      letter-spacing: 8px;
+      font-size: clamp(2.8rem, 12vw, 7rem);
+      letter-spacing: clamp(2px, 1.5vw, 8px);
+      line-height: 1.1;
     }
 
     .hero-content p {
-      font-size: 1.5rem;
-      margin: 20px 0 40px;
+      font-size: clamp(1rem, 3.5vw, 1.5rem);
+      margin: 16px 0 32px;
+      opacity: 0.9;
     }
 
     .btn {
+      display: inline-block;
       background: transparent;
       color: white;
-      padding: 18px 55px;
+      padding: 14px 36px;
       border: 2px solid white;
       border-radius: 50px;
-      font-size: 1.15rem;
+      font-size: 1rem;
       cursor: pointer;
+      text-decoration: none;
+      transition: 0.25s;
     }
 
-    .btn:hover { background: white; color: black; }
+    .btn:hover, .btn:active { background: white; color: black; }
 
-    .section { padding: 100px 20px; max-width: 1300px; margin: 0 auto; }
-    h2 { font-size: 3rem; text-align: center; margin-bottom: 60px; letter-spacing: 3px; }
+    .section { padding: 60px 16px; max-width: 1300px; margin: 0 auto; }
+    h2 { 
+      font-size: clamp(1.8rem, 6vw, 3rem); 
+      text-align: center; 
+      margin-bottom: 36px; 
+      letter-spacing: 2px; 
+    }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
     }
 
     .product-card {
       background: var(--gray);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      transition: all 0.4s;
+      transition: transform 0.3s;
     }
 
-    .product-card:hover { transform: translateY(-15px); }
+    .product-card:hover { transform: translateY(-8px); }
 
     .product-card img {
       width: 100%;
-      height: 320px;
+      height: 280px;
       object-fit: cover;
+      display: block;
     }
 
-    .info { padding: 20px; text-align: center; }
-    .price { font-size: 1.5rem; font-weight: 600; margin: 10px 0; }
+    .info { padding: 16px; text-align: center; }
+    .info h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .price { font-size: 1.35rem; font-weight: 600; margin: 8px 0 14px; }
 
     .add-btn {
       width: 100%;
       background: white;
       color: black;
-      padding: 14px;
+      padding: 12px;
       border: none;
       border-radius: 50px;
       font-weight: 600;
+      font-size: 0.95rem;
       cursor: pointer;
+      transition: 0.2s;
     }
+    .add-btn:active { transform: scale(0.97); }
 
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 73px;
+      top: 57px;
       left: 0;
       width: 100%;
-      background: #1f1f1f;
-      padding: 30px 20px;
+      background: #141414;
+      padding: 24px 20px 32px;
       flex-direction: column;
-      gap: 25px;
+      gap: 8px;
       z-index: 999;
       border-top: 1px solid #333;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
     }
 
-    .mobile-menu a { color: white; text-decoration: none; font-size: 1.3rem; }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.15rem;
+      padding: 14px 12px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .mobile-menu a:active { background: #222; }
 
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 48px 20px;
+    }
+    footer p:first-child { font-size: 1.5rem; margin-bottom: 6px; }
+
+    /* Mobile */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: block; }
+      .logo { letter-spacing: 1.5px; }
+      .section { padding: 48px 14px; }
+      .products { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .product-card img { height: 200px; }
+      .info { padding: 12px 10px; }
+      .info h3 { font-size: 0.9rem; }
+      .price { font-size: 1.1rem; margin: 6px 0 10px; }
+      .add-btn { padding: 10px; font-size: 0.85rem; }
+      .hero { min-height: 75vh; }
+    }
+
+    @media (max-width: 420px) {
+      .products { grid-template-columns: 1fr; gap: 16px; }
+      .product-card img { height: 260px; }
+      .info h3 { font-size: 1rem; }
+      .price { font-size: 1.25rem; }
+      .add-btn { padding: 12px; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -149,12 +244,12 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </div>
-      <div style="display:flex; align-items:center; gap:20px;">
-        <a href="cart.html" style="color:white; font-size:1.5rem; position:relative; text-decoration:none;">
+      <div class="nav-right">
+        <a href="cart.html" class="cart-link">
           🛒
-          <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:#c41e3a; color:white; font-size:0.75rem; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span>
+          <span id="cart-count">0</span>
         </a>
-        <div class="hamburger" id="hamburger">☰</div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
       </div>
     </div>
 
@@ -171,7 +266,7 @@
     <div class="hero-content">
       <h1>HABIBI</h1>
       <p>Desert Luxury • Street Royalty</p>
-      <a href="shop.html"><button class="btn">Shop The Collection</button></a>
+      <a href="shop.html" class="btn">Shop The Collection</a>
     </div>
   </div>
 
@@ -179,59 +274,65 @@
     <h2>Featured Drops</h2>
     <div class="products">
       <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Hoodie">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Habibi Fresh Cap">
         <div class="info">
           <h3>Habibi Fresh Cap</h3>
           <p class="price">R899</p>
-          <button class="add-btn" onclick="addToCart(1, 'Desert Sand Hoodie', 899, 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=800')">Add to Cart</button>
+          <button class="add-btn" onclick="addToCart(1, 'Habibi Fresh Cap', 899, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
         </div>
       </div>
 
       <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Tshirt">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Signature Logo Tee">
         <div class="info">
           <h3>Signature Logo Tee</h3>
           <p class="price">R449</p>
-          <button class="add-btn" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800')">Add to Cart</button>
+          <button class="add-btn" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
         </div>
       </div>
 
       <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg" alt="Jacket">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg" alt="Habibi Signature Hoodie">
         <div class="info">
-          <h3>Habibi Signature Hoodie </h3>
+          <h3>Habibi Signature Hoodie</h3>
           <p class="price">R1499</p>
-          <button class="add-btn" onclick="addToCart(3, 'Emirates Bomber Jacket', 1499, 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
+          <button class="add-btn" onclick="addToCart(3, 'Habibi Signature Hoodie', 1499, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg')">Add to Cart</button>
         </div>
       </div>
     </div>
   </div>
 
- <footer style="background:#000; text-align:center; padding:60px 20px;">
-  <p style="font-size:2rem;">HABIBI CLOTHING</p>
-  <p>Pretoria Streetwear</p>
-  <p style="margin-top:40px; font-size:0.9rem; opacity:0.6;">
-    © 2026 Habibi Clothing. All Rights Reserved.<br>
-    A Pretoria Born Brand • Established 2024
-  </p>
-</footer>
+  <footer>
+    <p>HABIBI CLOTHING</p>
+    <p>Pretoria Streetwear</p>
+    <p style="margin-top:28px; font-size:0.85rem; opacity:0.55;">
+      © 2026 Habibi Clothing. All Rights Reserved.<br>
+      A Pretoria Born Brand • Established 2024
+    </p>
+  </footer>
 
   <script>
-    // Mobile Menu
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
     hamburger.addEventListener('click', () => {
-      mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
-      hamburger.textContent = mobileMenu.style.display === 'flex' ? '✕' : '☰';
+      const isOpen = mobileMenu.style.display === 'flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      hamburger.textContent = isOpen ? '☰' : '✕';
     });
 
-    // Cart System
+    // Close menu when a link is tapped
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        hamburger.textContent = '☰';
+      });
+    });
+
     function addToCart(id, name, price, img) {
       let cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
       cart.push({ id, name, price, img });
       localStorage.setItem('habibiCart', JSON.stringify(cart));
-      
       alert(`${name} added to cart!`);
       updateCartCount();
     }
@@ -242,7 +343,6 @@
       if (countEl) countEl.textContent = cart.length;
     }
 
-    // Initialize
     window.onload = updateCartCount;
   </script>
 </body>

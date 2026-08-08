@@ -4,105 +4,186 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - HABIBI CLOTHING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root {
-      --gold: #d4af37;
-      --dark: #0f0a1f;
-      --accent: #ff4d94;
-    }
-    
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--dark);
-      color: #e0d9d0;
-      line-height: 1.6;
+      font-family: 'Poppins', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
     }
 
-    nav {
-      position: fixed;
+    header {
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 16px;
+      position: sticky;
       top: 0;
-      width: 100%;
-      background: rgba(15, 10, 31, 0.95);
-      backdrop-filter: blur(10px);
       z-index: 1000;
-      padding: 1.2rem 5%;
+      border-bottom: 1px solid #333;
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      gap: 12px;
     }
 
     .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 5vw, 2.3rem);
+      letter-spacing: 2px;
+      white-space: nowrap;
     }
 
-    .nav-links a {
-      color: #e0d9d0;
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .cart-link {
+      color: white;
+      font-size: 1.35rem;
+      position: relative;
       text-decoration: none;
-      margin-left: 2rem;
-      font-weight: 500;
+      padding: 6px;
     }
 
-    .nav-links a:hover {
-      color: var(--gold);
+    #cart-count {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background: #c41e3a;
+      color: white;
+      font-size: 0.7rem;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      padding: 8px;
+      line-height: 1;
     }
 
     .contact-container {
-      max-width: 800px;
-      margin: 120px auto 80px;
-      padding: 40px 20px;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 18px 70px;
       text-align: center;
     }
 
     h1 {
-      font-size: 3.2rem;
-      margin-bottom: 1rem;
-      color: var(--gold);
+      font-size: clamp(2rem, 7vw, 3rem);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
     }
 
     .subtitle {
-      font-size: 1.3rem;
-      color: #b8a88f;
-      margin-bottom: 50px;
+      font-size: clamp(0.95rem, 3vw, 1.15rem);
+      opacity: 0.75;
+      margin-bottom: 36px;
     }
 
-    /* Systeme.io Form Container */
     #systeme-form {
-      background: #1a1433;
+      background: var(--gray);
       border-radius: 16px;
-      padding: 40px;
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 24px 18px;
+      border: 1px solid #333;
+      text-align: left;
     }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 57px;
+      left: 0;
+      width: 100%;
+      background: #141414;
+      padding: 24px 20px 32px;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 999;
+      border-top: 1px solid #333;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.15rem;
+      padding: 14px 12px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .mobile-menu a:active { background: #222; }
 
     footer {
+      background: #000;
       text-align: center;
-      padding: 3rem;
-      background: #0a0619;
-      font-size: 1rem;
-      color: #888;
+      padding: 40px 20px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      #systeme-form { padding: 20px 14px; }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">HABIBI</div>
-    <div class="nav-links">
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a href="cart.html" class="cart-link">
+          🛒
+          <span id="cart-count">0</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
     </div>
-  </nav>
+  </header>
 
   <div class="contact-container">
     <h1>Get In Touch</h1>
     <p class="subtitle">We'd love to hear from you. Send us a message.</p>
 
-    <!-- Your Systeme.io Form -->
     <div id="systeme-form">
       <script id="form-script-tag-23909085" 
               src="https://trade-bet.systeme.io/public/remote/page/406542816a559f89a1cc65e3c8ff229957b787a5.js">
@@ -111,8 +192,32 @@
   </div>
 
   <footer>
-    <p>&copy; 2026 Habibi Clothing • Pretoria, South Africa</p>
+    <p>© 2026 Habibi Clothing • Pretoria, South Africa</p>
   </footer>
 
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.style.display === 'flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      hamburger.textContent = isOpen ? '☰' : '✕';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        hamburger.textContent = '☰';
+      });
+    });
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = cart.length;
+    }
+    window.onload = updateCartCount;
+  </script>
 </body>
 </html>
