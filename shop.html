@@ -79,32 +79,89 @@
     }
 
     .section {
-      padding: 40px 20px 70px;
+      padding: 32px 20px 70px;
       max-width: 1200px;
       margin: 0 auto;
     }
 
     .shop-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .shop-header h1 {
       font-size: clamp(1.8rem, 5vw, 2.6rem);
       letter-spacing: 2px;
       font-weight: 600;
+      margin-bottom: 6px;
     }
 
     .product-count {
       font-size: 0.9rem;
-      opacity: 0.6;
+      opacity: 0.55;
     }
 
-    /* ===== DESKTOP PRODUCT GRID ===== */
+    /* Category jump pills */
+    .cat-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+      position: sticky;
+      top: 58px;
+      z-index: 50;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 0;
+      border-bottom: 1px solid #222;
+    }
+
+    .cat-nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border: 1px solid #444;
+      border-radius: 50px;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .cat-nav a:hover,
+    .cat-nav a:active {
+      background: white;
+      color: black;
+      border-color: white;
+    }
+
+    /* Category section */
+    .category {
+      margin-bottom: 56px;
+      scroll-margin-top: 120px;
+    }
+
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .category-title h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .category-title .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, #444, transparent);
+    }
+
+    /* Product grid */
     .products {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -143,7 +200,6 @@
       transform: scale(1.06);
     }
 
-    /* Hover overlay with Add to Cart */
     .overlay {
       position: absolute;
       inset: 0;
@@ -156,9 +212,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .product-card:hover .overlay {
-      opacity: 1;
-    }
+    .product-card:hover .overlay { opacity: 1; }
 
     .overlay .add-btn {
       width: 100%;
@@ -175,9 +229,7 @@
       transition: transform 0.3s ease;
     }
 
-    .product-card:hover .overlay .add-btn {
-      transform: translateY(0);
-    }
+    .product-card:hover .overlay .add-btn { transform: translateY(0); }
 
     .info {
       padding: 16px 14px 18px;
@@ -197,7 +249,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* Mobile always-visible button (hidden on desktop) */
     .mobile-add {
       display: none;
       width: 100%;
@@ -210,6 +261,12 @@
       font-size: 0.95rem;
       cursor: pointer;
       margin-top: 12px;
+    }
+
+    .empty-cat {
+      opacity: 0.4;
+      font-size: 0.95rem;
+      padding: 20px 0;
     }
 
     .mobile-menu {
@@ -236,54 +293,41 @@
     }
     .mobile-menu a:active { background: #222; }
 
-    /* ===== TABLET ===== */
     @media (max-width: 900px) {
-      .products {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
-      }
+      .products { grid-template-columns: repeat(2, 1fr); gap: 18px; }
     }
 
-    /* ===== MOBILE ===== */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: block; }
 
-      .section {
-        padding: 28px 14px 50px;
+      .section { padding: 24px 14px 50px; }
+
+      .cat-nav {
+        top: 57px;
+        margin-bottom: 28px;
+        padding: 10px 0;
+        gap: 8px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .cat-nav::-webkit-scrollbar { display: none; }
+
+      .cat-nav a {
+        font-size: 0.8rem;
+        padding: 7px 14px;
       }
 
-      .shop-header {
-        margin-bottom: 22px;
-      }
+      .category { margin-bottom: 44px; scroll-margin-top: 110px; }
 
-      /* Single column on mobile for better product view */
-      .products {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
+      .products { grid-template-columns: 1fr; gap: 24px; }
 
-      .product-card {
-        border-radius: 14px;
-      }
-
-      .product-card:hover {
-        transform: none;
-        box-shadow: none;
-      }
-
-      .img-wrap {
-        aspect-ratio: 4 / 5;
-      }
-
-      .product-card:hover .img-wrap img {
-        transform: none;
-      }
-
-      /* Hide hover overlay on mobile */
-      .overlay {
-        display: none;
-      }
+      .product-card:hover { transform: none; box-shadow: none; }
+      .img-wrap { aspect-ratio: 4 / 5; }
+      .product-card:hover .img-wrap img { transform: none; }
+      .overlay { display: none; }
 
       .info {
         padding: 14px 14px 16px;
@@ -298,26 +342,13 @@
         gap: 12px;
       }
 
-      .info h3 {
-        font-size: 1.05rem;
-        flex: 1;
-      }
-
-      .price {
-        font-size: 1.2rem;
-        white-space: nowrap;
-      }
-
-      .mobile-add {
-        display: block;
-      }
+      .info h3 { font-size: 1.05rem; flex: 1; }
+      .price { font-size: 1.2rem; white-space: nowrap; }
+      .mobile-add { display: block; }
     }
 
-    /* Very small phones */
     @media (max-width: 380px) {
-      .img-wrap {
-        aspect-ratio: 3 / 4;
-      }
+      .img-wrap { aspect-ratio: 3 / 4; }
     }
   </style>
 </head>
@@ -356,77 +387,114 @@
       <span class="product-count">4 products</span>
     </div>
 
-    <div class="products">
+    <!-- Category jump links -->
+    <nav class="cat-nav">
+      <a href="#hats">Hats</a>
+      <a href="#tshirts">T-Shirts</a>
+      <a href="#hoodies">Hoodies</a>
+      <a href="#pants">Pants</a>
+    </nav>
 
-      <!-- Product 1 -->
-      <div class="product-card">
-        <div class="img-wrap">
-          <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Habibi Fresh Cap">
-          <div class="overlay">
-            <button class="add-btn" onclick="addToCart(1, 'Habibi Fresh Cap', 899, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
+    <!-- ========== HATS ========== -->
+    <section class="category" id="hats">
+      <div class="category-title">
+        <h2>Hats</h2>
+        <div class="line"></div>
+      </div>
+      <div class="products">
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Habibi Fresh Cap">
+            <div class="overlay">
+              <button class="add-btn" onclick="addToCart(1, 'Habibi Fresh Cap', 899, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
+            </div>
           </div>
-        </div>
-        <div class="info">
-          <div class="info-top">
-            <h3>Habibi Fresh Cap</h3>
-            <p class="price">R899</p>
+          <div class="info">
+            <div class="info-top">
+              <h3>Habibi Fresh Cap</h3>
+              <p class="price">R899</p>
+            </div>
+            <button class="mobile-add" onclick="addToCart(1, 'Habibi Fresh Cap', 899, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
           </div>
-          <button class="mobile-add" onclick="addToCart(1, 'Habibi Fresh Cap', 899, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
         </div>
       </div>
+    </section>
 
-      <!-- Product 2 -->
-      <div class="product-card">
-        <div class="img-wrap">
-          <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Signature Logo Tee">
-          <div class="overlay">
-            <button class="add-btn" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
+    <!-- ========== T-SHIRTS ========== -->
+    <section class="category" id="tshirts">
+      <div class="category-title">
+        <h2>T-Shirts</h2>
+        <div class="line"></div>
+      </div>
+      <div class="products">
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Signature Logo Tee">
+            <div class="overlay">
+              <button class="add-btn" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
+            </div>
           </div>
-        </div>
-        <div class="info">
-          <div class="info-top">
-            <h3>Signature Logo Tee</h3>
-            <p class="price">R449</p>
+          <div class="info">
+            <div class="info-top">
+              <h3>Signature Logo Tee</h3>
+              <p class="price">R449</p>
+            </div>
+            <button class="mobile-add" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
           </div>
-          <button class="mobile-add" onclick="addToCart(2, 'Signature Logo Tee', 449, 'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
         </div>
       </div>
+    </section>
 
-      <!-- Product 3 -->
-      <div class="product-card">
-        <div class="img-wrap">
-          <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800" alt="Emirates Bomber Jacket">
-          <div class="overlay">
-            <button class="add-btn" onclick="addToCart(3, 'Emirates Bomber Jacket', 1499, 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
+    <!-- ========== HOODIES & OUTERWEAR ========== -->
+    <section class="category" id="hoodies">
+      <div class="category-title">
+        <h2>Hoodies & Outerwear</h2>
+        <div class="line"></div>
+      </div>
+      <div class="products">
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800" alt="Emirates Bomber Jacket">
+            <div class="overlay">
+              <button class="add-btn" onclick="addToCart(3, 'Emirates Bomber Jacket', 1499, 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
+            </div>
           </div>
-        </div>
-        <div class="info">
-          <div class="info-top">
-            <h3>Emirates Bomber Jacket</h3>
-            <p class="price">R1499</p>
+          <div class="info">
+            <div class="info-top">
+              <h3>Emirates Bomber Jacket</h3>
+              <p class="price">R1499</p>
+            </div>
+            <button class="mobile-add" onclick="addToCart(3, 'Emirates Bomber Jacket', 1499, 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
           </div>
-          <button class="mobile-add" onclick="addToCart(3, 'Emirates Bomber Jacket', 1499, 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
         </div>
       </div>
+    </section>
 
-      <!-- Product 4 -->
-      <div class="product-card">
-        <div class="img-wrap">
-          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" alt="Sahara Cargo Pants">
-          <div class="overlay">
-            <button class="add-btn" onclick="addToCart(4, 'Sahara Cargo Pants', 799, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
+    <!-- ========== PANTS ========== -->
+    <section class="category" id="pants">
+      <div class="category-title">
+        <h2>Pants</h2>
+        <div class="line"></div>
+      </div>
+      <div class="products">
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" alt="Sahara Cargo Pants">
+            <div class="overlay">
+              <button class="add-btn" onclick="addToCart(4, 'Sahara Cargo Pants', 799, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
+            </div>
           </div>
-        </div>
-        <div class="info">
-          <div class="info-top">
-            <h3>Sahara Cargo Pants</h3>
-            <p class="price">R799</p>
+          <div class="info">
+            <div class="info-top">
+              <h3>Sahara Cargo Pants</h3>
+              <p class="price">R799</p>
+            </div>
+            <button class="mobile-add" onclick="addToCart(4, 'Sahara Cargo Pants', 799, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
           </div>
-          <button class="mobile-add" onclick="addToCart(4, 'Sahara Cargo Pants', 799, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
         </div>
       </div>
+    </section>
 
-    </div>
   </div>
 
   <script>
