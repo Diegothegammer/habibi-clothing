@@ -28,6 +28,32 @@
       text-align: center; grid-column: 1 / -1; letter-spacing: 1px;
     }
     h2 { font-size: 1.15rem; margin-bottom: 16px; }
+
+    #loadingBox, #blockedBox {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 20px;
+      background: var(--gray);
+      border-radius: 16px;
+      display: none;
+    }
+    #loadingBox.show, #blockedBox.show { display: block; }
+    .spinner {
+      width: 40px; height: 40px; margin: 0 auto 18px;
+      border: 3px solid #333; border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadingBox p, #blockedBox p { opacity: 0.8; max-width: 360px; margin: 0 auto 8px; }
+    #blockedBox h2 { margin-bottom: 10px; }
+    #blockedBox a {
+      display: inline-block; margin-top: 20px; color: white;
+      border: 1px solid #555; padding: 12px 24px; border-radius: 50px; text-decoration: none;
+    }
+
+    .checkout-main { display: none; }
+    .checkout-main.show { display: contents; }
+
     .logged-banner {
       background: #1a2e1a; border: 1px solid #2d5a2d; border-radius: 12px;
       padding: 16px 18px; margin-bottom: 20px; font-size: 0.95rem;
@@ -39,6 +65,9 @@
       padding: 14px 16px; margin-bottom: 18px; font-size: 0.9rem;
     }
     .guest-note a { color: #ffd78a; font-weight: 600; }
+    .sa-badge {
+      font-size: 0.8rem; opacity: 0.55; margin-bottom: 16px;
+    }
     .order-summary {
       background: var(--gray); padding: 24px; border-radius: 14px;
       height: fit-content; position: sticky; top: 80px;
@@ -88,59 +117,80 @@
 
   <div class="section">
     <h1>Checkout</h1>
-    <div>
-      <div id="loggedSection">
-        <div class="logged-banner">
-          ✅ Logged in as <strong id="userNameDisplay"></strong>
-          <div class="logged-details" id="userDetailsDisplay"></div>
-          <div style="margin-top:10px; font-size:0.85rem;"><a href="profile.html">View profile</a></div>
-        </div>
-        <h2>Confirm Order</h2>
-        <p style="opacity:0.7; margin-bottom:16px; font-size:0.95rem;">Your saved shipping details will be used. Cash on delivery.</p>
-        <div class="btn-row">
-          <button type="button" class="btn place-order" id="placeLoggedBtn">Place Order • Cash on Delivery</button>
-          <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel</button>
-        </div>
-      </div>
 
-      <div id="guestSection">
-        <div class="guest-note">
-          Have an account? <a href="login.html">Login</a> for faster checkout — or <a href="signup.html">Sign up</a>.
-        </div>
-        <h2>Shipping Details</h2>
-        <form id="guestForm">
-          <input type="text" id="gName" placeholder="Full Name" required>
-          <input type="email" id="gEmail" placeholder="Email Address" required>
-          <input type="tel" id="gPhone" placeholder="Phone Number" required>
-          <input type="text" id="gAddress" placeholder="Street Address" required>
-          <input type="text" id="gCity" placeholder="City" required>
-          <select id="gProvince" required>
-            <option value="">Select Province</option>
-            <option>Gauteng</option>
-            <option>Western Cape</option>
-            <option>KwaZulu-Natal</option>
-            <option>Eastern Cape</option>
-            <option>Limpopo</option>
-            <option>Mpumalanga</option>
-            <option>North West</option>
-            <option>Free State</option>
-            <option>Northern Cape</option>
-          </select>
-          <input type="text" id="gPostal" placeholder="Postal Code" required>
-          <div class="btn-row">
-            <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order • Cash on Delivery</button>
-            <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel Order</button>
-          </div>
-        </form>
-      </div>
+    <!-- Loading -->
+    <div id="loadingBox" class="show">
+      <div class="spinner"></div>
+      <p id="loadingText">Checking location...</p>
+      <p style="font-size:0.85rem;opacity:0.5;">Please wait a moment</p>
     </div>
 
-    <div class="order-summary">
-      <h2>Order Summary</h2>
-      <div id="order-items"></div>
-      <div class="total-line"><span>Subtotal</span><span id="subtotal">R0</span></div>
-      <div class="total-line"><span>Shipping (Free)</span><span>R0</span></div>
-      <div class="grand-total"><span>Total</span><span id="grand-total">R0</span></div>
+    <!-- Blocked (not SA) -->
+    <div id="blockedBox">
+      <h2>South Africa only</h2>
+      <p>Habibi Clothing currently delivers only within South Africa.</p>
+      <p style="font-size:0.9rem;opacity:0.6;">If you're in SA and see this by mistake (VPN / network), turn off VPN and try again.</p>
+      <a href="shop.html">Back to Shop</a>
+    </div>
+
+    <!-- Main checkout (shown after SA check + auth ready) -->
+    <div class="checkout-main" id="checkoutMain">
+      <div>
+        <p class="sa-badge">🇿🇦 Delivering within South Africa only</p>
+
+        <div id="loggedSection">
+          <div class="logged-banner">
+            ✅ Logged in as <strong id="userNameDisplay"></strong>
+            <div class="logged-details" id="userDetailsDisplay"></div>
+            <div style="margin-top:10px; font-size:0.85rem;"><a href="profile.html">View profile</a></div>
+          </div>
+          <h2>Confirm Order</h2>
+          <p style="opacity:0.7; margin-bottom:16px; font-size:0.95rem;">Your saved shipping details will be used. Cash on delivery.</p>
+          <div class="btn-row">
+            <button type="button" class="btn place-order" id="placeLoggedBtn">Place Order • Cash on Delivery</button>
+            <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel</button>
+          </div>
+        </div>
+
+        <div id="guestSection">
+          <div class="guest-note">
+            Have an account? <a href="login.html">Login</a> for faster checkout — or <a href="signup.html">Sign up</a>.
+          </div>
+          <h2>Shipping Details</h2>
+          <form id="guestForm">
+            <input type="text" id="gName" placeholder="Full Name" required>
+            <input type="email" id="gEmail" placeholder="Email Address" required>
+            <input type="tel" id="gPhone" placeholder="Phone Number" required>
+            <input type="text" id="gAddress" placeholder="Street Address" required>
+            <input type="text" id="gCity" placeholder="City" required>
+            <select id="gProvince" required>
+              <option value="">Select Province</option>
+              <option>Gauteng</option>
+              <option>Western Cape</option>
+              <option>KwaZulu-Natal</option>
+              <option>Eastern Cape</option>
+              <option>Limpopo</option>
+              <option>Mpumalanga</option>
+              <option>North West</option>
+              <option>Free State</option>
+              <option>Northern Cape</option>
+            </select>
+            <input type="text" id="gPostal" placeholder="Postal Code" required>
+            <div class="btn-row">
+              <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order • Cash on Delivery</button>
+              <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel Order</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+        <div id="order-items"></div>
+        <div class="total-line"><span>Subtotal</span><span id="subtotal">R0</span></div>
+        <div class="total-line"><span>Shipping (Free)</span><span>R0</span></div>
+        <div class="grand-total"><span>Total</span><span id="grand-total">R0</span></div>
+      </div>
     </div>
   </div>
 
@@ -155,6 +205,65 @@
     let currentUser = null;
     let profile = null;
     let cartTotal = 0;
+    let saAllowed = false;
+
+    const loadingBox = document.getElementById("loadingBox");
+    const loadingText = document.getElementById("loadingText");
+    const blockedBox = document.getElementById("blockedBox");
+    const checkoutMain = document.getElementById("checkoutMain");
+
+    function showLoading(msg) {
+      loadingText.textContent = msg || "Loading...";
+      loadingBox.classList.add("show");
+      blockedBox.classList.remove("show");
+      checkoutMain.classList.remove("show");
+    }
+
+    function showBlocked() {
+      loadingBox.classList.remove("show");
+      blockedBox.classList.add("show");
+      checkoutMain.classList.remove("show");
+    }
+
+    function showCheckout() {
+      loadingBox.classList.remove("show");
+      blockedBox.classList.remove("show");
+      checkoutMain.classList.add("show");
+    }
+
+    /** South Africa only — IP country check */
+    async function checkSouthAfrica() {
+      showLoading("Checking if you're in South Africa...");
+      try {
+        // Primary: ipapi.co
+        const res = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          const code = (data.country_code || data.country || "").toUpperCase();
+          if (code === "ZA") return true;
+          if (code) return false;
+        }
+      } catch (e) {
+        console.warn("ipapi failed", e);
+      }
+
+      try {
+        // Fallback: ipwho.is
+        const res2 = await fetch("https://ipwho.is/", { cache: "no-store" });
+        if (res2.ok) {
+          const data2 = await res2.json();
+          const code2 = (data2.country_code || "").toUpperCase();
+          if (code2 === "ZA") return true;
+          if (code2) return false;
+        }
+      } catch (e) {
+        console.warn("ipwho failed", e);
+      }
+
+      // If both fail, allow but user still must pick SA province (guest)
+      console.warn("Could not verify country — allowing with province check");
+      return true;
+    }
 
     function getCart() {
       return JSON.parse(localStorage.getItem("habibiCart") || "[]");
@@ -191,6 +300,10 @@
     }
 
     async function placeOrder(shipping, userId, userEmail) {
+      if (!saAllowed) {
+        alert("Orders are only accepted from South Africa.");
+        return;
+      }
       const cart = getCart();
       if (cart.length === 0) {
         alert("Your cart is empty!");
@@ -208,21 +321,21 @@
           qty: i.qty || 1
         })),
         total: cartTotal,
-        shipping
+        shipping,
+        country: "ZA"
       });
 
       localStorage.removeItem("habibiCart");
       alert("✅ Order placed!\n\nOrder #" + orderId + "\nTotal: R" + cartTotal + "\n\nThank you for shopping with Habibi ❤️");
 
-      if (userId) {
-        window.location.href = "profile.html";
-      } else {
-        window.location.href = "index.html";
-      }
+      window.location.href = userId ? "profile.html" : "index.html";
     }
 
     document.getElementById("placeLoggedBtn").addEventListener("click", async () => {
-      if (!profile) return;
+      if (!profile) {
+        alert("Still loading your details. Please wait.");
+        return;
+      }
       const btn = document.getElementById("placeLoggedBtn");
       btn.disabled = true;
       btn.textContent = "Placing order...";
@@ -269,27 +382,54 @@
       }
     });
 
-    loadSummary();
+    // Boot: SA check → then auth / profile
+    (async function init() {
+      loadSummary();
 
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      if (user) {
-        profile = await getUserProfile(user.uid);
-        document.getElementById("loggedSection").style.display = "block";
-        document.getElementById("guestSection").style.display = "none";
-        document.getElementById("userNameDisplay").textContent =
-          profile?.name || user.displayName || user.email;
-        if (profile) {
-          document.getElementById("userDetailsDisplay").innerHTML =
-            (profile.phone || "") + "<br>" +
-            (profile.address || "") + ", " + (profile.city || "") + "<br>" +
-            (profile.province || "") + ", " + (profile.postal || "");
-        }
-      } else {
-        document.getElementById("loggedSection").style.display = "none";
-        document.getElementById("guestSection").style.display = "block";
+      saAllowed = await checkSouthAfrica();
+      if (!saAllowed) {
+        showBlocked();
+        return;
       }
-    });
+
+      showLoading("Loading checkout...");
+
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+
+        if (user) {
+          showLoading("Loading your account details...");
+          document.getElementById("guestSection").style.display = "none";
+
+          try {
+            profile = await getUserProfile(user.uid);
+          } catch (err) {
+            console.error(err);
+            profile = null;
+          }
+
+          document.getElementById("loggedSection").style.display = "block";
+          document.getElementById("userNameDisplay").textContent =
+            profile?.name || user.displayName || user.email || "Member";
+
+          if (profile) {
+            document.getElementById("userDetailsDisplay").innerHTML =
+              (profile.phone || "") + "<br>" +
+              (profile.address || "") + ", " + (profile.city || "") + "<br>" +
+              (profile.province || "") + ", " + (profile.postal || "");
+          } else {
+            document.getElementById("userDetailsDisplay").innerHTML =
+              "Could not load saved address. <a href='profile.html'>Check profile</a>";
+          }
+
+          showCheckout();
+        } else {
+          document.getElementById("loggedSection").style.display = "none";
+          document.getElementById("guestSection").style.display = "block";
+          showCheckout();
+        }
+      });
+    })();
   </script>
 </body>
 </html>
