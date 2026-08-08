@@ -4,210 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cart - HABIBI CLOTHING</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
     :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
-    
     header {
-      background: rgba(10,10,10,0.97);
-      backdrop-filter: blur(12px);
-      padding: 14px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 1px solid #333;
+      background: rgba(10,10,10,0.97); padding: 14px 16px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
     }
-
     .nav-container {
-      max-width: 1300px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+      max-width: 1300px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 5vw, 2.2rem);
-      letter-spacing: 2px;
-      white-space: nowrap;
-    }
-
+    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.2rem); letter-spacing: 2px; }
     .nav-links { display: flex; gap: 28px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
-
+    .nav-links a { color: white; text-decoration: none; font-size: 0.95rem; }
     .nav-right { display: flex; align-items: center; gap: 16px; }
-
-    .cart-link {
-      color: white;
-      font-size: 1.35rem;
-      position: relative;
-      text-decoration: none;
-      padding: 6px;
-    }
-
+    .cart-link { color: white; font-size: 1.35rem; position: relative; text-decoration: none; padding: 6px; }
     #cart-count {
-      position: absolute;
-      top: -4px;
-      right: -6px;
-      background: #c41e3a;
-      color: white;
-      font-size: 0.7rem;
-      min-width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      padding: 0 4px;
+      position: absolute; top: -4px; right: -6px; background: #c41e3a; color: white;
+      font-size: 0.7rem; min-width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 0 4px;
     }
-
-    .hamburger {
-      display: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: white;
-      background: none;
-      border: none;
-      padding: 8px;
-      line-height: 1;
-    }
-
+    .hamburger { display: none; font-size: 1.6rem; cursor: pointer; color: white; background: none; border: none; padding: 8px; }
     .section { padding: 48px 16px 60px; max-width: 900px; margin: 0 auto; }
-    h1 {
-      text-align: center;
-      margin-bottom: 28px;
-      font-size: clamp(1.8rem, 6vw, 2.8rem);
-      letter-spacing: 1px;
-    }
-
+    h1 { text-align: center; margin-bottom: 28px; font-size: clamp(1.8rem, 6vw, 2.8rem); }
     .cart-item {
-      display: flex;
-      background: var(--gray);
-      margin-bottom: 14px;
-      border-radius: 12px;
-      overflow: hidden;
-      align-items: stretch;
+      display: flex; background: var(--gray); margin-bottom: 14px; border-radius: 12px; overflow: hidden;
     }
-
-    .cart-item img {
-      width: 110px;
-      min-width: 110px;
-      height: 110px;
-      object-fit: cover;
-    }
-
-    .cart-details {
-      padding: 14px 16px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .cart-details h3 {
-      font-size: 1rem;
-      margin-bottom: 4px;
-      line-height: 1.3;
-    }
-
-    .cart-details p {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
+    .cart-item img { width: 110px; min-width: 110px; height: 110px; object-fit: cover; }
+    .cart-details { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .cart-details h3 { font-size: 1rem; margin-bottom: 4px; }
+    .meta { font-size: 0.85rem; opacity: 0.7; margin-bottom: 6px; }
+    .cart-details .line-price { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
     .remove-btn {
-      color: #ff4d6d;
-      cursor: pointer;
-      font-size: 0.9rem;
-      background: none;
-      border: none;
-      padding: 0;
-      text-align: left;
-      font-family: inherit;
+      color: #ff4d6d; cursor: pointer; font-size: 0.9rem; background: none; border: none;
+      padding: 0; text-align: left; font-family: inherit;
     }
-
-    .total {
-      font-size: clamp(1.3rem, 4vw, 1.7rem);
-      text-align: right;
-      margin: 24px 0 20px;
-      font-weight: 600;
-    }
-
+    .total { font-size: clamp(1.3rem, 4vw, 1.7rem); text-align: right; margin: 24px 0 20px; font-weight: 600; }
     .checkout-btn {
-      width: 100%;
-      padding: 16px;
-      background: white;
-      color: black;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
+      width: 100%; padding: 16px; background: white; color: black; font-size: 1.1rem;
+      font-weight: 600; border: none; border-radius: 50px; cursor: pointer;
     }
-    .checkout-btn:active { transform: scale(0.98); }
-
-    .empty-msg {
-      text-align: center;
-      font-size: 1.15rem;
-      opacity: 0.8;
-      padding: 40px 10px;
-    }
-
+    .empty-msg { text-align: center; font-size: 1.15rem; opacity: 0.8; padding: 40px 10px; }
     .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 57px;
-      left: 0;
-      width: 100%;
-      background: #141414;
-      padding: 24px 20px 32px;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 999;
-      border-top: 1px solid #333;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
+      padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
     }
-    .mobile-menu a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.15rem;
-      padding: 14px 12px;
-      border-radius: 10px;
-      font-weight: 500;
-    }
-    .mobile-menu a:active { background: #222; }
-
+    .mobile-menu a { color: white; text-decoration: none; font-size: 1.15rem; padding: 14px 12px; }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: block; }
-    }
-
-    @media (max-width: 480px) {
-      .cart-item {
-        flex-direction: row;
-      }
-      .cart-item img {
-        width: 90px;
-        min-width: 90px;
-        height: 90px;
-      }
-      .cart-details {
-        padding: 12px;
-      }
-      .cart-details h3 { font-size: 0.95rem; }
-      .cart-details p { font-size: 1rem; }
+      .cart-item img { width: 90px; min-width: 90px; height: 90px; }
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="nav-container">
       <div class="logo">HABIBI</div>
@@ -218,14 +70,10 @@
         <a href="contact.html">Contact</a>
       </div>
       <div class="nav-right">
-        <a href="cart.html" class="cart-link">
-          🛒
-          <span id="cart-count">0</span>
-        </a>
+        <a href="cart.html" class="cart-link">🛒<span id="cart-count">0</span></a>
         <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
       </div>
     </div>
-
     <div class="mobile-menu" id="mobileMenu">
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
@@ -245,67 +93,66 @@
   <script>
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-
     hamburger.addEventListener('click', () => {
       const isOpen = mobileMenu.style.display === 'flex';
       mobileMenu.style.display = isOpen ? 'none' : 'flex';
       hamburger.textContent = isOpen ? '☰' : '✕';
     });
-
     mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.style.display = 'none';
-        hamburger.textContent = '☰';
-      });
+      link.addEventListener('click', () => { mobileMenu.style.display = 'none'; hamburger.textContent = '☰'; });
     });
 
     function loadCart() {
-      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
       const container = document.getElementById('cart-items');
       let total = 0;
-
       container.innerHTML = '';
 
       if (cart.length === 0) {
         container.innerHTML = '<p class="empty-msg">Your cart is empty, habibi 😔</p>';
         document.getElementById('cart-total').textContent = 'R0';
-        updateCartCount();
+        updateBadge();
         return;
       }
 
       cart.forEach((item, index) => {
-        total += item.price;
+        const qty = item.qty || 1;
+        const line = item.price * qty;
+        total += line;
+        const color = item.color || '—';
         container.innerHTML += `
           <div class="cart-item">
             <img src="${item.img}" alt="${item.name}">
             <div class="cart-details">
               <h3>${item.name}</h3>
-              <p>R${item.price}</p>
+              <div class="meta">${color} · Qty ${qty}</div>
+              <p class="line-price">R${line}</p>
               <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
             </div>
           </div>`;
       });
 
-      document.getElementById('cart-total').textContent = `R${total}`;
-      updateCartCount();
+      document.getElementById('cart-total').textContent = 'R' + total;
+      updateBadge();
     }
 
     function removeFromCart(index) {
-      let cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
+      let cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
       cart.splice(index, 1);
       localStorage.setItem('habibiCart', JSON.stringify(cart));
       loadCart();
     }
 
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
-      document.getElementById('cart-count').textContent = cart.length;
+    function updateBadge() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
+      const count = cart.reduce((s, i) => s + (i.qty || 1), 0);
+      document.getElementById('cart-count').textContent = count;
     }
 
     function proceedToCheckout() {
-      const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
-      if (cart.length === 0) return alert("Cart is empty!");
-      window.location.href = "checkout.html";
+      const cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
+      if (cart.length === 0) return alert('Cart is empty!');
+      window.location.href = 'checkout.html';
     }
 
     window.onload = loadCart;
