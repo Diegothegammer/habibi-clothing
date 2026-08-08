@@ -6,81 +6,38 @@
   <title>Sign Up - HABIBI CLOTHING</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
-    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    :root { --black: #0a0a0a; --white: #f8f8f8; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
-
-    header {
-      background: rgba(10,10,10,0.97);
-      padding: 14px 16px;
-      border-bottom: 1px solid #333;
-    }
-    .nav-container {
-      max-width: 500px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    header { background: rgba(10,10,10,0.97); padding: 14px 16px; border-bottom: 1px solid #333; }
+    .nav-container { max-width: 500px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
     .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 2px; text-decoration: none; color: white; }
     .nav-container a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
-
-    .wrap {
-      max-width: 440px;
-      margin: 40px auto 60px;
-      padding: 0 16px;
-    }
-    h1 { font-size: 1.8rem; margin-bottom: 8px; letter-spacing: 1px; }
-    .sub { opacity: 0.65; margin-bottom: 28px; font-size: 0.95rem; }
-
-    form { display: flex; flex-direction: column; gap: 12px; }
+    .wrap { max-width: 440px; margin: 36px auto 60px; padding: 0 16px; }
+    h1 { font-size: 1.8rem; margin-bottom: 6px; letter-spacing: 1px; }
+    .sub { opacity: 0.65; margin-bottom: 24px; font-size: 0.95rem; }
+    form { display: flex; flex-direction: column; gap: 11px; }
     label { font-size: 0.8rem; opacity: 0.7; margin-bottom: -4px; }
     input, select {
-      padding: 14px 16px;
-      background: #111;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: inherit;
-      width: 100%;
+      padding: 14px 16px; background: #111; border: 1px solid #444; color: white;
+      border-radius: 10px; font-size: 1rem; font-family: inherit; width: 100%;
     }
     input::placeholder { color: #777; }
     select {
       -webkit-appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
     }
-
     .btn {
-      margin-top: 10px;
-      padding: 15px;
-      background: white;
-      color: black;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
+      margin-top: 8px; padding: 15px; background: white; color: black; border: none;
+      border-radius: 50px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: inherit;
     }
-    .btn:active { transform: scale(0.98); }
-
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .msg { margin-top: 14px; font-size: 0.9rem; text-align: center; }
     .msg.error { color: #ff6b7a; }
     .msg.ok { color: #6bffb0; }
-
-    .switch { text-align: center; margin-top: 24px; font-size: 0.95rem; opacity: 0.8; }
+    .switch { text-align: center; margin-top: 22px; font-size: 0.95rem; opacity: 0.8; }
     .switch a { color: white; font-weight: 600; }
-
-    .note {
-      margin-top: 28px;
-      padding: 14px;
-      background: #151515;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      opacity: 0.6;
-      line-height: 1.5;
-    }
   </style>
 </head>
 <body>
@@ -131,61 +88,70 @@
       <label>Postal Code</label>
       <input type="text" id="postal" required placeholder="Postal code" autocomplete="postal-code">
 
-      <button type="submit" class="btn">Create Account</button>
+      <button type="submit" class="btn" id="submitBtn">Create Account</button>
     </form>
 
     <p class="msg" id="msg"></p>
     <p class="switch">Already have an account? <a href="login.html">Login</a></p>
-
-    <div class="note">
-      Demo accounts are stored only in your browser. This is not a secure production system. For real stores use a proper backend (Firebase, Supabase, etc.).
-    </div>
   </div>
 
-  <script>
-    // Redirect if already logged in
-    if (localStorage.getItem('habibiCurrentUser')) {
-      window.location.href = 'profile.html';
-    }
+  <script type="module">
+    import {
+      auth,
+      createUserWithEmailAndPassword,
+      updateProfile,
+      onAuthStateChanged,
+      saveUserProfile
+    } from "./js/firebase.js";
 
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "profile.html";
+    });
+
+    const form = document.getElementById("signupForm");
+    const msg = document.getElementById("msg");
+    const btn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const msg = document.getElementById('msg');
+      msg.textContent = "";
+      msg.className = "msg";
+      btn.disabled = true;
+      btn.textContent = "Creating...";
 
-      const user = {
-        id: Date.now().toString(),
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim().toLowerCase(),
-        phone: document.getElementById('phone').value.trim(),
-        password: document.getElementById('password').value,
-        address: document.getElementById('address').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        province: document.getElementById('province').value,
-        postal: document.getElementById('postal').value.trim(),
-        createdAt: new Date().toISOString()
-      };
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const province = document.getElementById("province").value;
+      const postal = document.getElementById("postal").value.trim();
 
-      if (user.password.length < 6) {
-        msg.className = 'msg error';
-        msg.textContent = 'Password must be at least 6 characters.';
-        return;
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: name });
+        await saveUserProfile(cred.user.uid, {
+          name, email, phone, address, city, province, postal,
+          createdAt: new Date().toISOString()
+        });
+        msg.className = "msg ok";
+        msg.textContent = "Account created! Redirecting...";
+        setTimeout(() => (window.location.href = "profile.html"), 800);
+      } catch (err) {
+        msg.className = "msg error";
+        if (err.code === "auth/email-already-in-use") {
+          msg.textContent = "This email is already registered. Try logging in.";
+        } else if (err.code === "auth/weak-password") {
+          msg.textContent = "Password should be at least 6 characters.";
+        } else if (err.code === "auth/invalid-email") {
+          msg.textContent = "Please enter a valid email.";
+        } else {
+          msg.textContent = err.message || "Something went wrong. Try again.";
+        }
+        btn.disabled = false;
+        btn.textContent = "Create Account";
       }
-
-      let users = JSON.parse(localStorage.getItem('habibiUsers') || '[]');
-
-      if (users.some(u => u.email === user.email)) {
-        msg.className = 'msg error';
-        msg.textContent = 'An account with this email already exists.';
-        return;
-      }
-
-      users.push(user);
-      localStorage.setItem('habibiUsers', JSON.stringify(users));
-      localStorage.setItem('habibiCurrentUser', user.email);
-
-      msg.className = 'msg ok';
-      msg.textContent = 'Account created! Redirecting...';
-      setTimeout(() => window.location.href = 'profile.html', 1000);
     });
   </script>
 </body>

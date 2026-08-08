@@ -9,12 +9,9 @@
     :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); line-height: 1.5; overflow-x: hidden; }
-
     header {
-      background: rgba(10,10,10,0.97);
-      padding: 14px 16px;
-      position: sticky; top: 0; z-index: 1000;
-      border-bottom: 1px solid #333;
+      background: rgba(10,10,10,0.97); padding: 14px 16px;
+      position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
     }
     .nav-container {
       max-width: 1000px; margin: 0 auto;
@@ -22,115 +19,60 @@
     }
     .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 2px; text-decoration: none; color: white; }
     .back-link { color: white; font-size: 0.9rem; text-decoration: none; opacity: 0.85; }
-
     .section {
-      padding: 36px 16px 60px;
-      max-width: 1000px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 40px;
+      padding: 36px 16px 60px; max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 340px; gap: 40px;
     }
-
     h1 {
-      font-size: clamp(1.7rem, 5vw, 2.4rem);
-      margin-bottom: 20px;
-      text-align: center;
-      grid-column: 1 / -1;
-      letter-spacing: 1px;
+      font-size: clamp(1.7rem, 5vw, 2.4rem); margin-bottom: 20px;
+      text-align: center; grid-column: 1 / -1; letter-spacing: 1px;
     }
-
     h2 { font-size: 1.15rem; margin-bottom: 16px; }
-
     .logged-banner {
-      background: #1a2e1a;
-      border: 1px solid #2d5a2d;
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
+      background: #1a2e1a; border: 1px solid #2d5a2d; border-radius: 12px;
+      padding: 16px 18px; margin-bottom: 20px; font-size: 0.95rem;
     }
     .logged-banner a { color: #8fef8f; }
-    .logged-details {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      opacity: 0.85;
-      line-height: 1.6;
-    }
-
+    .logged-details { margin-top: 10px; font-size: 0.9rem; opacity: 0.85; line-height: 1.6; }
     .guest-note {
-      background: #1f1a12;
-      border: 1px solid #4a3f28;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      font-size: 0.9rem;
+      background: #1f1a12; border: 1px solid #4a3f28; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 18px; font-size: 0.9rem;
     }
     .guest-note a { color: #ffd78a; font-weight: 600; }
-
     .order-summary {
-      background: var(--gray);
-      padding: 24px;
-      border-radius: 14px;
-      height: fit-content;
-      position: sticky;
-      top: 80px;
+      background: var(--gray); padding: 24px; border-radius: 14px;
+      height: fit-content; position: sticky; top: 80px;
     }
-
     .cart-item {
-      display: flex; gap: 12px;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #333;
+      display: flex; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #333;
     }
     .cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
     .cart-item h4 { font-size: 0.9rem; margin-bottom: 3px; }
     .cart-item p { font-size: 0.9rem; opacity: 0.85; }
-
     .total-line { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.95rem; }
     .grand-total {
-      font-size: 1.3rem; font-weight: 600;
-      border-top: 2px solid #444;
-      padding-top: 12px; margin-top: 10px;
-      display: flex; justify-content: space-between;
+      font-size: 1.3rem; font-weight: 600; border-top: 2px solid #444;
+      padding-top: 12px; margin-top: 10px; display: flex; justify-content: space-between;
     }
-
     form { display: flex; flex-direction: column; gap: 12px; }
     input, select {
-      padding: 14px 16px;
-      background: #111;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: inherit;
-      width: 100%;
-      -webkit-appearance: none;
+      padding: 14px 16px; background: #111; border: 1px solid #444; color: white;
+      border-radius: 10px; font-size: 1rem; font-family: inherit; width: 100%; -webkit-appearance: none;
     }
     input::placeholder { color: #777; }
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
     }
-
     .btn-row { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
     .btn {
-      padding: 15px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-family: inherit;
-      width: 100%;
+      padding: 15px; font-size: 1.05rem; font-weight: 600; border: none;
+      border-radius: 50px; cursor: pointer; font-family: inherit; width: 100%;
     }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .place-order { background: white; color: black; }
     .cancel-btn { background: transparent; color: #ff4d6d; border: 2px solid #ff4d6d; }
-
-    #guestForm { display: none; }
-
+    #loggedSection, #guestSection { display: none; }
     @media (max-width: 800px) {
       .section { grid-template-columns: 1fr; gap: 28px; padding: 28px 14px 50px; }
       .order-summary { position: static; order: -1; }
@@ -149,28 +91,28 @@
     <h1>Checkout</h1>
 
     <div>
-      <div id="loggedSection" style="display:none;">
+      <div id="loggedSection">
         <div class="logged-banner">
           ✅ Logged in as <strong id="userNameDisplay"></strong>
           <div class="logged-details" id="userDetailsDisplay"></div>
           <div style="margin-top:10px; font-size:0.85rem;">
-            <a href="profile.html">View profile</a> · Wrong account? <a href="#" onclick="logout(); return false;">Logout</a>
+            <a href="profile.html">View profile</a>
           </div>
         </div>
         <h2>Confirm Order</h2>
         <p style="opacity:0.7; margin-bottom:16px; font-size:0.95rem;">Your saved shipping details will be used. Cash on delivery.</p>
         <div class="btn-row">
-          <button type="button" class="btn place-order" onclick="placeOrderLoggedIn()">Place Order • Cash on Delivery</button>
-          <button type="button" class="btn cancel-btn" onclick="cancelCheckout()">Cancel</button>
+          <button type="button" class="btn place-order" id="placeLoggedBtn">Place Order • Cash on Delivery</button>
+          <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel</button>
         </div>
       </div>
 
       <div id="guestSection">
         <div class="guest-note">
-          Have an account? <a href="login.html">Login</a> for faster checkout — or <a href="signup.html">Sign up</a> to save your details.
+          Have an account? <a href="login.html">Login</a> for faster checkout — or <a href="signup.html">Sign up</a>.
         </div>
         <h2>Shipping Details</h2>
-        <form id="guestForm" onsubmit="placeOrderGuest(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <form id="guestForm">
           <input type="text" id="gName" placeholder="Full Name" required autocomplete="name">
           <input type="email" id="gEmail" placeholder="Email Address" required autocomplete="email">
           <input type="tel" id="gPhone" placeholder="Phone Number" required autocomplete="tel">
@@ -190,8 +132,8 @@
           </select>
           <input type="text" id="gPostal" placeholder="Postal Code" required autocomplete="postal-code">
           <div class="btn-row">
-            <button type="submit" class="btn place-order">Place Order • Cash on Delivery</button>
-            <button type="button" class="btn cancel-btn" onclick="cancelCheckout()">Cancel Order</button>
+            <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order • Cash on Delivery</button>
+            <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel Order</button>
           </div>
         </form>
       </div>
@@ -206,142 +148,140 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import {
+      auth,
+      onAuthStateChanged,
+      getUserProfile,
+      createOrder
+    } from "./js/firebase.js";
+
     let currentUser = null;
+    let profile = null;
     let cartTotal = 0;
 
     function getCart() {
-      return JSON.parse(localStorage.getItem('habibiCart') || '[]');
+      return JSON.parse(localStorage.getItem("habibiCart") || "[]");
     }
 
-    function loadOrderSummary() {
+    function loadSummary() {
       const cart = getCart();
-      const container = document.getElementById('order-items');
+      const container = document.getElementById("order-items");
       cartTotal = 0;
-      container.innerHTML = '';
+      container.innerHTML = "";
 
       if (cart.length === 0) {
         container.innerHTML = '<p style="opacity:0.7;">Your cart is empty.</p>';
         return;
       }
 
-      cart.forEach(item => {
+      cart.forEach((item) => {
         cartTotal += item.price;
         container.innerHTML += `
           <div class="cart-item">
             <img src="${item.img}" alt="${item.name}">
-            <div>
-              <h4>${item.name}</h4>
-              <p>R${item.price}</p>
-            </div>
+            <div><h4>${item.name}</h4><p>R${item.price}</p></div>
           </div>`;
       });
 
-      document.getElementById('subtotal').textContent = 'R' + cartTotal;
-      document.getElementById('grand-total').textContent = 'R' + cartTotal;
+      document.getElementById("subtotal").textContent = "R" + cartTotal;
+      document.getElementById("grand-total").textContent = "R" + cartTotal;
     }
 
-    function checkAuth() {
-      const email = localStorage.getItem('habibiCurrentUser');
-      if (!email) {
-        document.getElementById('guestSection').style.display = 'block';
-        document.getElementById('loggedSection').style.display = 'none';
-        document.getElementById('guestForm').style.display = 'flex';
-        return;
-      }
-
-      const users = JSON.parse(localStorage.getItem('habibiUsers') || '[]');
-      currentUser = users.find(u => u.email === email);
-
-      if (!currentUser) {
-        localStorage.removeItem('habibiCurrentUser');
-        checkAuth();
-        return;
-      }
-
-      document.getElementById('guestSection').style.display = 'none';
-      document.getElementById('loggedSection').style.display = 'block';
-      document.getElementById('userNameDisplay').textContent = currentUser.name;
-      document.getElementById('userDetailsDisplay').innerHTML =
-        currentUser.phone + '<br>' +
-        currentUser.address + ', ' + currentUser.city + '<br>' +
-        currentUser.province + ', ' + currentUser.postal;
-    }
-
-    function saveOrder(shipping, userEmail) {
+    async function placeOrder(shipping, userId, userEmail) {
       const cart = getCart();
-      if (cart.length === 0) return null;
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
 
-      const order = {
-        id: 'HB' + Date.now().toString().slice(-8),
-        userEmail: userEmail || null,
-        items: cart.map(i => ({ name: i.name, price: i.price })),
+      const orderId = await createOrder({
+        userId: userId || null,
+        userEmail: userEmail || shipping.email || null,
+        items: cart.map((i) => ({ name: i.name, price: i.price, id: i.id })),
         total: cartTotal,
-        shipping: shipping,
-        date: new Date().toISOString(),
-        status: 'pending'
-      };
+        shipping
+      });
 
-      const orders = JSON.parse(localStorage.getItem('habibiOrders') || '[]');
-      orders.push(order);
-      localStorage.setItem('habibiOrders', JSON.stringify(orders));
-      localStorage.removeItem('habibiCart');
-      return order;
+      localStorage.removeItem("habibiCart");
+      alert("✅ Order placed!\n\nOrder #" + orderId + "\nTotal: R" + cartTotal + "\n\nThank you for shopping with Habibi ❤️");
+
+      if (userId) {
+        window.location.href = "profile.html";
+      } else {
+        window.location.href = "index.html";
+      }
     }
 
-    function placeOrderLoggedIn() {
-      if (!currentUser) return;
-      const cart = getCart();
-      if (cart.length === 0) return alert('Your cart is empty!');
+    document.getElementById("placeLoggedBtn").addEventListener("click", async () => {
+      if (!profile) return;
+      const btn = document.getElementById("placeLoggedBtn");
+      btn.disabled = true;
+      btn.textContent = "Placing order...";
+      try {
+        await placeOrder(
+          {
+            name: profile.name,
+            email: profile.email,
+            phone: profile.phone,
+            address: profile.address,
+            city: profile.city,
+            province: profile.province,
+            postal: profile.postal
+          },
+          currentUser.uid,
+          profile.email
+        );
+      } catch (err) {
+        alert("Could not place order: " + (err.message || "Try again"));
+        btn.disabled = false;
+        btn.textContent = "Place Order • Cash on Delivery";
+      }
+    });
 
-      const shipping = {
-        name: currentUser.name,
-        email: currentUser.email,
-        phone: currentUser.phone,
-        address: currentUser.address,
-        city: currentUser.city,
-        province: currentUser.province,
-        postal: currentUser.postal
-      };
-
-      const order = saveOrder(shipping, currentUser.email);
-      alert('✅ Order Placed!\n\nOrder #' + order.id + '\nTotal: R' + order.total + '\n\nThank you, ' + currentUser.name + ' ❤️');
-      setTimeout(() => window.location.href = 'profile.html', 1200);
-    }
-
-    function placeOrderGuest(e) {
+    document.getElementById("guestForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const cart = getCart();
-      if (cart.length === 0) return alert('Your cart is empty!');
+      const btn = document.getElementById("placeGuestBtn");
+      btn.disabled = true;
+      btn.textContent = "Placing order...";
+      try {
+        await placeOrder({
+          name: document.getElementById("gName").value.trim(),
+          email: document.getElementById("gEmail").value.trim(),
+          phone: document.getElementById("gPhone").value.trim(),
+          address: document.getElementById("gAddress").value.trim(),
+          city: document.getElementById("gCity").value.trim(),
+          province: document.getElementById("gProvince").value,
+          postal: document.getElementById("gPostal").value.trim()
+        }, null, document.getElementById("gEmail").value.trim());
+      } catch (err) {
+        alert("Could not place order: " + (err.message || "Try again"));
+        btn.disabled = false;
+        btn.textContent = "Place Order • Cash on Delivery";
+      }
+    });
 
-      const shipping = {
-        name: document.getElementById('gName').value.trim(),
-        email: document.getElementById('gEmail').value.trim(),
-        phone: document.getElementById('gPhone').value.trim(),
-        address: document.getElementById('gAddress').value.trim(),
-        city: document.getElementById('gCity').value.trim(),
-        province: document.getElementById('gProvince').value,
-        postal: document.getElementById('gPostal').value.trim()
-      };
+    loadSummary();
 
-      const order = saveOrder(shipping, null);
-      alert('✅ Order Placed!\n\nOrder #' + order.id + '\nTotal: R' + order.total + '\n\nThank you for shopping with Habibi ❤️');
-      setTimeout(() => window.location.href = 'index.html', 1500);
-    }
-
-    function cancelCheckout() {
-      if (confirm('Cancel this checkout?')) window.location.href = 'cart.html';
-    }
-
-    function logout() {
-      localStorage.removeItem('habibiCurrentUser');
-      window.location.reload();
-    }
-
-    window.onload = function() {
-      loadOrderSummary();
-      checkAuth();
-    };
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        profile = await getUserProfile(user.uid);
+        document.getElementById("loggedSection").style.display = "block";
+        document.getElementById("guestSection").style.display = "none";
+        document.getElementById("userNameDisplay").textContent =
+          profile?.name || user.displayName || user.email;
+        if (profile) {
+          document.getElementById("userDetailsDisplay").innerHTML =
+            (profile.phone || "") + "<br>" +
+            (profile.address || "") + ", " + (profile.city || "") + "<br>" +
+            (profile.province || "") + ", " + (profile.postal || "");
+        }
+      } else {
+        document.getElementById("loggedSection").style.display = "none";
+        document.getElementById("guestSection").style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
