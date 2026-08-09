@@ -31,6 +31,8 @@ const firebaseConfig = {
   measurementId: "G-K4W47LHJRW"
 };
 
+export const ADMIN_EMAIL = "diegothegammer1@gmail.com";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
@@ -89,4 +91,26 @@ export async function getOrdersForUser(uid) {
   return Object.values(all)
     .filter((o) => o.userId === uid)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+/** Get every order (admin) — includes Firebase key */
+export async function getAllOrders() {
+  const snap = await get(ref(db, "orders"));
+  if (!snap.exists()) return [];
+  const all = snap.val();
+  return Object.keys(all)
+    .map((key) => ({ ...all[key], _key: key }))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+/** Update order status by Firebase key */
+export async function updateOrderStatus(orderKey, status) {
+  await update(ref(db, "orders/" + orderKey), {
+    status,
+    updatedAt: new Date().toISOString()
+  });
+}
+
+export function isAdminEmail(email) {
+  return (email || "").toLowerCase() === ADMIN_EMAIL.toLowerCase();
 }

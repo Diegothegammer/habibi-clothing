@@ -64,9 +64,8 @@
     }
     .actions .primary { background: white; color: black; }
     .actions .ghost { border: 1px solid #555; color: white; }
-    @media (max-width: 500px) {
-      .stats { grid-template-columns: 1fr; }
-    }
+    .actions .admin { background: #e6a817; color: #000; }
+    @media (max-width: 500px) { .stats { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -90,7 +89,8 @@
       onAuthStateChanged,
       signOut,
       getUserProfile,
-      getOrdersForUser
+      getOrdersForUser,
+      isAdminEmail
     } from "./js/firebase.js";
 
     function formatDate(iso) {
@@ -107,6 +107,9 @@
 
       const name = profile?.name || user.displayName || "Habibi member";
       const email = profile?.email || user.email;
+      const adminLink = isAdminEmail(user.email)
+        ? '<a href="admin.html" class="admin">Admin · Orders</a>'
+        : "";
 
       let ordersHtml = "";
       if (orders.length === 0) {
@@ -166,6 +169,7 @@
         <div class="actions">
           <a href="shop.html" class="primary">Continue Shopping</a>
           <a href="cart.html" class="ghost">View Cart</a>
+          ${adminLink}
         </div>
       `;
 
@@ -182,8 +186,7 @@
       }
       render(user).catch((err) => {
         document.getElementById("content").innerHTML =
-          '<p class="loading">Could not load profile. Check your connection.<br><br>' +
-          (err.message || "") + "</p>";
+          '<p class="loading">Could not load profile.<br><br>' + (err.message || "") + "</p>";
       });
     });
   </script>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Orders - HABIBI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+    header {
+      background: rgba(10,10,10,0.97); padding: 14px 16px; border-bottom: 1px solid #333;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav {
+      max-width: 900px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 2px; text-decoration: none; color: white; }
+    .nav a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
+
+    .wrap { max-width: 900px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    .denied, .loading {
+      text-align: center; padding: 60px 20px; opacity: 0.75;
+    }
+    .denied a { color: #ffd78a; }
+
+    h1 { font-size: 1.7rem; letter-spacing: 1px; margin-bottom: 6px; }
+    .sub { opacity: 0.55; font-size: 0.9rem; margin-bottom: 24px; }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px;
+    }
+    .stat {
+      background: var(--gray); border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .stat .n { font-size: 1.5rem; font-weight: 600; }
+    .stat .l { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+    .tabs {
+      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .tab {
+      padding: 8px 16px; border-radius: 50px; border: 1px solid #444;
+      background: transparent; color: white; font-family: inherit;
+      font-size: 0.85rem; cursor: pointer;
+    }
+    .tab.active { background: white; color: black; border-color: white; }
+
+    .order {
+      background: var(--gray); border-radius: 14px; padding: 18px; margin-bottom: 14px;
+      border-left: 4px solid #666;
+    }
+    .order.pending { border-left-color: #e6a817; }
+    .order.completed { border-left-color: #2ecc71; opacity: 0.85; }
+
+    .order-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .badge {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 4px 10px; border-radius: 50px; font-weight: 600;
+    }
+    .badge.pending { background: #3d3210; color: #ffd76a; }
+    .badge.completed { background: #0f2e1a; color: #6bffb0; }
+
+    .order-id { font-size: 0.8rem; opacity: 0.5; }
+    .order-total { font-size: 1.2rem; font-weight: 600; }
+    .order-date { font-size: 0.85rem; opacity: 0.65; margin-bottom: 10px; }
+
+    .ship, .items {
+      font-size: 0.9rem; line-height: 1.55; margin-bottom: 10px;
+    }
+    .ship strong, .items strong { opacity: 0.55; font-weight: 500; display: block; margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .order-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .btn {
+      padding: 10px 18px; border-radius: 50px; border: none;
+      font-family: inherit; font-weight: 600; font-size: 0.85rem; cursor: pointer;
+    }
+    .btn-done { background: #2ecc71; color: #000; }
+    .btn-pending { background: transparent; color: #ffd76a; border: 1px solid #665518; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .empty { text-align: center; padding: 40px 16px; opacity: 0.5; }
+
+    @media (max-width: 500px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a href="index.html" class="logo">HABIBI</a>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <a href="profile.html">Profile</a>
+        <a href="shop.html">Shop</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap" id="root">
+    <p class="loading">Checking access...</p>
+  </div>
+
+  <script type="module">
+    import {
+      auth,
+      onAuthStateChanged,
+      isAdminEmail,
+      getAllOrders,
+      updateOrderStatus,
+      ADMIN_EMAIL
+    } from "./js/firebase.js";
+
+    const root = document.getElementById("root");
+    let allOrders = [];
+    let filter = "pending"; // pending | completed | all
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      return new Date(iso).toLocaleString("en-ZA", {
+        day: "numeric", month: "short", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
+    }
+
+    function renderList() {
+      const pending = allOrders.filter((o) => (o.status || "pending") === "pending");
+      const completed = allOrders.filter((o) => o.status === "completed");
+
+      let list = allOrders;
+      if (filter === "pending") list = pending;
+      if (filter === "completed") list = completed;
+
+      let cards = "";
+      if (list.length === 0) {
+        cards = `<p class="empty">No ${filter === "all" ? "" : filter + " "}orders.</p>`;
+      } else {
+        cards = list.map((o) => {
+          const st = o.status || "pending";
+          const s = o.shipping || {};
+          const items = (o.items || [])
+            .map((i) => {
+              const extra = [i.color, i.qty ? "x" + i.qty : null].filter(Boolean).join(" · ");
+              return `${i.name}${extra ? " (" + extra + ")" : ""} — R${(i.price || 0) * (i.qty || 1)}`;
+            })
+            .join("<br>");
+
+          const actionBtn =
+            st === "pending"
+              ? `<button class="btn btn-done" data-key="${o._key}" data-action="completed">Mark completed</button>`
+              : `<button class="btn btn-pending" data-key="${o._key}" data-action="pending">Mark pending again</button>`;
+
+          return `
+            <div class="order ${st}">
+              <div class="order-head">
+                <div>
+                  <span class="badge ${st}">${st}</span>
+                  <div class="order-id" style="margin-top:8px">#${o.id || o._key}</div>
+                </div>
+                <div class="order-total">R${o.total || 0}</div>
+              </div>
+              <div class="order-date">${formatDate(o.createdAt)}</div>
+              <div class="ship">
+                <strong>Customer</strong>
+                ${s.name || "—"}<br>
+                ${s.phone || ""}<br>
+                ${s.email || o.userEmail || ""}<br>
+                ${[s.address, s.city, s.province, s.postal].filter(Boolean).join(", ")}
+              </div>
+              <div class="items">
+                <strong>Items</strong>
+                ${items || "—"}
+              </div>
+              <div class="order-actions">${actionBtn}</div>
+            </div>`;
+        }).join("");
+      }
+
+      root.innerHTML = `
+        <h1>Order Admin</h1>
+        <p class="sub">Signed in as ${ADMIN_EMAIL}</p>
+
+        <div class="stats">
+          <div class="stat"><div class="n">${pending.length}</div><div class="l">Pending</div></div>
+          <div class="stat"><div class="n">${completed.length}</div><div class="l">Completed</div></div>
+          <div class="stat"><div class="n">${allOrders.length}</div><div class="l">Total</div></div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab ${filter === "pending" ? "active" : ""}" data-filter="pending">Pending</button>
+          <button class="tab ${filter === "completed" ? "active" : ""}" data-filter="completed">Completed</button>
+          <button class="tab ${filter === "all" ? "active" : ""}" data-filter="all">All</button>
+          <button class="tab" id="refreshBtn" style="margin-left:auto">Refresh</button>
+        </div>
+
+        <div id="list">${cards}</div>
+      `;
+
+      root.querySelectorAll(".tab[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filter = btn.dataset.filter;
+          renderList();
+        });
+      });
+
+      document.getElementById("refreshBtn").addEventListener("click", () => loadOrders(true));
+
+      root.querySelectorAll("[data-action]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const key = btn.dataset.key;
+          const action = btn.dataset.action;
+          btn.disabled = true;
+          btn.textContent = "Updating...";
+          try {
+            await updateOrderStatus(key, action);
+            await loadOrders(false);
+          } catch (err) {
+            alert("Could not update: " + (err.message || err));
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+
+    async function loadOrders(showLoading) {
+      if (showLoading) {
+        root.innerHTML = '<p class="loading">Loading orders...</p>';
+      }
+      try {
+        allOrders = await getAllOrders();
+        renderList();
+      } catch (err) {
+        root.innerHTML =
+          '<p class="denied">Could not load orders.<br><br>' +
+          (err.message || "") +
+          "</p>";
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        root.innerHTML = `
+          <div class="denied">
+            <p>You must be logged in.</p>
+            <p style="margin-top:12px"><a href="login.html">Login</a></p>
+          </div>`;
+        return;
+      }
+
+      if (!isAdminEmail(user.email)) {
+        root.innerHTML = `
+          <div class="denied">
+            <p>Access denied.</p>
+            <p style="margin-top:8px;font-size:0.9rem;opacity:0.7">This page is only for the store owner.</p>
+            <p style="margin-top:16px"><a href="index.html">Back to shop</a></p>
+          </div>`;
+        return;
+      }
+
+      loadOrders(true);
+    });
+  </script>
+</body>
+</html>
