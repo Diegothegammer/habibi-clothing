@@ -22,27 +22,31 @@
     .nav a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
 
     .wrap { max-width: 900px; margin: 0 auto; padding: 28px 16px 60px; }
-
-    .denied, .loading {
-      text-align: center; padding: 60px 20px; opacity: 0.75;
-    }
+    .denied, .loading { text-align: center; padding: 60px 20px; opacity: 0.75; }
     .denied a { color: #ffd78a; }
 
     h1 { font-size: 1.7rem; letter-spacing: 1px; margin-bottom: 6px; }
     .sub { opacity: 0.55; font-size: 0.9rem; margin-bottom: 24px; }
 
     .stats {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px;
+    }
+    .stats-row2 {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px;
     }
     .stat {
       background: var(--gray); border-radius: 12px; padding: 16px; text-align: center;
     }
+    .stat.revenue {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #1a2e1a, #1f1f1f);
+      border: 1px solid #2d5a2d;
+    }
     .stat .n { font-size: 1.5rem; font-weight: 600; }
+    .stat.revenue .n { font-size: 1.8rem; color: #6bffb0; }
     .stat .l { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-    .tabs {
-      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
-    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     .tab {
       padding: 8px 16px; border-radius: 50px; border: 1px solid #444;
       background: transparent; color: white; font-family: inherit;
@@ -55,7 +59,8 @@
       border-left: 4px solid #666;
     }
     .order.pending { border-left-color: #e6a817; }
-    .order.completed { border-left-color: #2ecc71; opacity: 0.85; }
+    .order.completed { border-left-color: #2ecc71; }
+    .order.refunded { border-left-color: #ff6b7a; opacity: 0.9; }
 
     .order-head {
       display: flex; justify-content: space-between; align-items: flex-start;
@@ -67,15 +72,17 @@
     }
     .badge.pending { background: #3d3210; color: #ffd76a; }
     .badge.completed { background: #0f2e1a; color: #6bffb0; }
+    .badge.refunded { background: #3d1518; color: #ff8a95; }
 
     .order-id { font-size: 0.8rem; opacity: 0.5; }
     .order-total { font-size: 1.2rem; font-weight: 600; }
     .order-date { font-size: 0.85rem; opacity: 0.65; margin-bottom: 10px; }
 
-    .ship, .items {
-      font-size: 0.9rem; line-height: 1.55; margin-bottom: 10px;
+    .ship, .items { font-size: 0.9rem; line-height: 1.55; margin-bottom: 10px; }
+    .ship strong, .items strong {
+      opacity: 0.55; font-weight: 500; display: block; margin-bottom: 2px;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
     }
-    .ship strong, .items strong { opacity: 0.55; font-weight: 500; display: block; margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .order-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
     .btn {
@@ -84,12 +91,14 @@
     }
     .btn-done { background: #2ecc71; color: #000; }
     .btn-pending { background: transparent; color: #ffd76a; border: 1px solid #665518; }
+    .btn-refund { background: transparent; color: #ff8a95; border: 1px solid #663038; }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .empty { text-align: center; padding: 40px 16px; opacity: 0.5; }
 
     @media (max-width: 500px) {
-      .stats { grid-template-columns: 1fr; }
+      .stats, .stats-row2 { grid-template-columns: 1fr; }
+      .stat.revenue { grid-column: auto; }
     }
   </style>
 </head>
@@ -120,7 +129,7 @@
 
     const root = document.getElementById("root");
     let allOrders = [];
-    let filter = "pending"; // pending | completed | all
+    let filter = "pending"; // pending | completed | refunded | all
 
     function formatDate(iso) {
       if (!iso) return "—";
@@ -130,20 +139,44 @@
       });
     }
 
+    function statusOf(o) {
+      return o.status || "pending";
+    }
+
+    function actionButtons(o) {
+      const st = statusOf(o);
+      const key = o._key;
+      const parts = [];
+
+      if (st !== "completed") {
+        parts.push(`<button class="btn btn-done" data-key="${key}" data-action="completed">Mark completed</button>`);
+      }
+      if (st !== "pending") {
+        parts.push(`<button class="btn btn-pending" data-key="${key}" data-action="pending">Mark pending</button>`);
+      }
+      if (st !== "refunded") {
+        parts.push(`<button class="btn btn-refund" data-key="${key}" data-action="refunded">Mark refunded</button>`);
+      }
+      return parts.join("");
+    }
+
     function renderList() {
-      const pending = allOrders.filter((o) => (o.status || "pending") === "pending");
-      const completed = allOrders.filter((o) => o.status === "completed");
+      const pending = allOrders.filter((o) => statusOf(o) === "pending");
+      const completed = allOrders.filter((o) => statusOf(o) === "completed");
+      const refunded = allOrders.filter((o) => statusOf(o) === "refunded");
+      const revenue = completed.reduce((s, o) => s + (Number(o.total) || 0), 0);
 
       let list = allOrders;
       if (filter === "pending") list = pending;
       if (filter === "completed") list = completed;
+      if (filter === "refunded") list = refunded;
 
       let cards = "";
       if (list.length === 0) {
         cards = `<p class="empty">No ${filter === "all" ? "" : filter + " "}orders.</p>`;
       } else {
         cards = list.map((o) => {
-          const st = o.status || "pending";
+          const st = statusOf(o);
           const s = o.shipping || {};
           const items = (o.items || [])
             .map((i) => {
@@ -151,11 +184,6 @@
               return `${i.name}${extra ? " (" + extra + ")" : ""} — R${(i.price || 0) * (i.qty || 1)}`;
             })
             .join("<br>");
-
-          const actionBtn =
-            st === "pending"
-              ? `<button class="btn btn-done" data-key="${o._key}" data-action="completed">Mark completed</button>`
-              : `<button class="btn btn-pending" data-key="${o._key}" data-action="pending">Mark pending again</button>`;
 
           return `
             <div class="order ${st}">
@@ -178,7 +206,7 @@
                 <strong>Items</strong>
                 ${items || "—"}
               </div>
-              <div class="order-actions">${actionBtn}</div>
+              <div class="order-actions">${actionButtons(o)}</div>
             </div>`;
         }).join("");
       }
@@ -190,12 +218,22 @@
         <div class="stats">
           <div class="stat"><div class="n">${pending.length}</div><div class="l">Pending</div></div>
           <div class="stat"><div class="n">${completed.length}</div><div class="l">Completed</div></div>
-          <div class="stat"><div class="n">${allOrders.length}</div><div class="l">Total</div></div>
+        </div>
+        <div class="stats-row2">
+          <div class="stat"><div class="n">${refunded.length}</div><div class="l">Refunded</div></div>
+          <div class="stat"><div class="n">${allOrders.length}</div><div class="l">All orders</div></div>
+        </div>
+        <div class="stats" style="margin-bottom:28px">
+          <div class="stat revenue">
+            <div class="n">R${revenue}</div>
+            <div class="l">Total from completed orders</div>
+          </div>
         </div>
 
         <div class="tabs">
           <button class="tab ${filter === "pending" ? "active" : ""}" data-filter="pending">Pending</button>
           <button class="tab ${filter === "completed" ? "active" : ""}" data-filter="completed">Completed</button>
+          <button class="tab ${filter === "refunded" ? "active" : ""}" data-filter="refunded">Refunded</button>
           <button class="tab ${filter === "all" ? "active" : ""}" data-filter="all">All</button>
           <button class="tab" id="refreshBtn" style="margin-left:auto">Refresh</button>
         </div>
@@ -217,6 +255,7 @@
           const key = btn.dataset.key;
           const action = btn.dataset.action;
           btn.disabled = true;
+          const old = btn.textContent;
           btn.textContent = "Updating...";
           try {
             await updateOrderStatus(key, action);
@@ -224,6 +263,7 @@
           } catch (err) {
             alert("Could not update: " + (err.message || err));
             btn.disabled = false;
+            btn.textContent = old;
           }
         });
       });
