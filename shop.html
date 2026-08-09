@@ -9,7 +9,6 @@
     :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
-
     header {
       background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
       padding: 14px 16px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
@@ -18,7 +17,7 @@
       max-width: 1300px; margin: 0 auto;
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
-    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: 2px; white-space: nowrap; }
+    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: 2px; }
     .nav-links { display: flex; gap: 28px; }
     .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
     .nav-right { display: flex; align-items: center; gap: 16px; }
@@ -28,25 +27,21 @@
       font-size: 0.7rem; min-width: 18px; height: 18px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 0 4px;
     }
-    .hamburger { display: none; font-size: 1.6rem; cursor: pointer; color: white; background: none; border: none; padding: 8px; line-height: 1; }
-
+    .hamburger { display: none; font-size: 1.6rem; cursor: pointer; color: white; background: none; border: none; padding: 8px; }
     .section { padding: 32px 20px 70px; max-width: 1200px; margin: 0 auto; }
-    .shop-header { margin-bottom: 20px; }
-    .shop-header h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); letter-spacing: 2px; font-weight: 600; margin-bottom: 6px; }
+    .shop-header h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); letter-spacing: 2px; margin-bottom: 6px; }
     .product-count { font-size: 0.9rem; opacity: 0.55; }
-
     .cat-nav {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;
+      display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 40px;
       position: sticky; top: 58px; z-index: 50;
       background: rgba(10,10,10,0.92); backdrop-filter: blur(10px);
       padding: 12px 0; border-bottom: 1px solid #222;
     }
     .cat-nav a {
       color: white; text-decoration: none; font-size: 0.85rem; font-weight: 500;
-      padding: 8px 16px; border: 1px solid #444; border-radius: 50px; white-space: nowrap;
+      padding: 8px 16px; border: 1px solid #444; border-radius: 50px;
     }
-    .cat-nav a:hover, .cat-nav a:active { background: white; color: black; border-color: white; }
-
+    .cat-nav a:hover { background: white; color: black; }
     .category { margin-bottom: 56px; scroll-margin-top: 120px; }
     .category-title { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
     .category-title h2 {
@@ -54,54 +49,49 @@
       letter-spacing: 3px; text-transform: uppercase; white-space: nowrap;
     }
     .category-title .line { flex: 1; height: 1px; background: linear-gradient(to right, #444, transparent); }
-
     .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
     .product-card {
       background: var(--gray); border-radius: 12px; overflow: hidden;
-      position: relative; transition: transform 0.35s ease, box-shadow 0.35s ease;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.45); }
     .img-wrap { position: relative; overflow: hidden; aspect-ratio: 3 / 4; background: #151515; }
-    .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-    .product-card:hover .img-wrap img { transform: scale(1.06); }
+    .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .stock-badge {
+      position: absolute; top: 10px; left: 10px; font-size: 0.7rem; font-weight: 600;
+      padding: 4px 10px; border-radius: 50px; background: rgba(0,0,0,0.7);
+    }
+    .stock-badge.out { background: #5a1520; color: #ff8a95; }
     .overlay {
       position: absolute; inset: 0; background: rgba(0,0,0,0.45);
       display: flex; align-items: flex-end; justify-content: center; padding: 20px;
-      opacity: 0; transition: opacity 0.3s ease;
+      opacity: 0; transition: opacity 0.3s;
     }
     .product-card:hover .overlay { opacity: 1; }
-    .overlay .add-btn {
+    .overlay .add-btn, .mobile-add {
       width: 100%; max-width: 200px; background: white; color: black; padding: 13px 16px;
       border: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
     }
-    .info { padding: 16px 14px 18px; text-align: left; }
-    .info h3 { font-size: 1rem; font-weight: 500; margin-bottom: 6px; line-height: 1.3; }
+    .overlay .add-btn:disabled, .mobile-add:disabled { opacity: 0.45; cursor: not-allowed; }
+    .info { padding: 16px 14px 18px; }
+    .info h3 { font-size: 1rem; font-weight: 500; margin-bottom: 6px; }
     .price { font-size: 1.15rem; font-weight: 600; }
-    .mobile-add {
-      display: none; width: 100%; background: white; color: black; padding: 12px;
-      border: none; border-radius: 50px; font-weight: 600; font-size: 0.95rem; cursor: pointer; margin-top: 12px;
-    }
-
+    .mobile-add { display: none; margin-top: 12px; width: 100%; max-width: none; }
+    .empty-cat { opacity: 0.4; padding: 12px 0; }
+    .shop-loading { text-align: center; padding: 60px 20px; opacity: 0.6; grid-column: 1 / -1; }
     .mobile-menu {
       display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
-      padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999;
-      border-top: 1px solid #333; box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
     }
-    .mobile-menu a { color: white; text-decoration: none; font-size: 1.15rem; padding: 14px 12px; border-radius: 10px; font-weight: 500; }
-
+    .mobile-menu a { color: white; text-decoration: none; font-size: 1.15rem; padding: 14px 12px; }
     @media (max-width: 900px) { .products { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: block; }
-      .section { padding: 24px 14px 50px; }
-      .cat-nav { top: 57px; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
-      .cat-nav::-webkit-scrollbar { display: none; }
-      .products { grid-template-columns: 1fr; gap: 24px; }
-      .product-card:hover { transform: none; box-shadow: none; }
+      .products { grid-template-columns: 1fr; }
       .overlay { display: none; }
-      .info { display: flex; flex-direction: column; }
-      .info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
       .mobile-add { display: block; }
+      .info-top { display: flex; justify-content: space-between; gap: 12px; }
     }
   </style>
 </head>
@@ -132,7 +122,7 @@
   <div class="section">
     <div class="shop-header">
       <h1>Shop</h1>
-      <span class="product-count">4 products</span>
+      <span class="product-count" id="productCount">Loading...</span>
     </div>
     <nav class="cat-nav">
       <a href="#hats">Hats</a>
@@ -140,92 +130,109 @@
       <a href="#hoodies">Hoodies</a>
       <a href="#pants">Pants</a>
     </nav>
-
-    <section class="category" id="hats">
-      <div class="category-title"><h2>Hats</h2><div class="line"></div></div>
-      <div class="products">
-        <div class="product-card">
-          <div class="img-wrap">
-            <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Habibi Fresh Cap">
-            <div class="overlay">
-              <button class="add-btn" onclick="addToCart(1,'Habibi Fresh Cap',899,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
-            </div>
-          </div>
-          <div class="info">
-            <div class="info-top"><h3>Habibi Fresh Cap</h3><p class="price">R899</p></div>
-            <button class="mobile-add" onclick="addToCart(1,'Habibi Fresh Cap',899,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="category" id="tshirts">
-      <div class="category-title"><h2>T-Shirts</h2><div class="line"></div></div>
-      <div class="products">
-        <div class="product-card">
-          <div class="img-wrap">
-            <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Signature Logo Tee">
-            <div class="overlay">
-              <button class="add-btn" onclick="addToCart(2,'Signature Logo Tee',449,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
-            </div>
-          </div>
-          <div class="info">
-            <div class="info-top"><h3>Signature Logo Tee</h3><p class="price">R449</p></div>
-            <button class="mobile-add" onclick="addToCart(2,'Signature Logo Tee',449,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="category" id="hoodies">
-      <div class="category-title"><h2>Hoodies &amp; Outerwear</h2><div class="line"></div></div>
-      <div class="products">
-        <div class="product-card">
-          <div class="img-wrap">
-            <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800" alt="Emirates Bomber Jacket">
-            <div class="overlay">
-              <button class="add-btn" onclick="addToCart(3,'Emirates Bomber Jacket',1499,'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
-            </div>
-          </div>
-          <div class="info">
-            <div class="info-top"><h3>Emirates Bomber Jacket</h3><p class="price">R1499</p></div>
-            <button class="mobile-add" onclick="addToCart(3,'Emirates Bomber Jacket',1499,'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800')">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="category" id="pants">
-      <div class="category-title"><h2>Pants</h2><div class="line"></div></div>
-      <div class="products">
-        <div class="product-card">
-          <div class="img-wrap">
-            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" alt="Sahara Cargo Pants">
-            <div class="overlay">
-              <button class="add-btn" onclick="addToCart(4,'Sahara Cargo Pants',799,'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
-            </div>
-          </div>
-          <div class="info">
-            <div class="info-top"><h3>Sahara Cargo Pants</h3><p class="price">R799</p></div>
-            <button class="mobile-add" onclick="addToCart(4,'Sahara Cargo Pants',799,'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800')">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div id="shopRoot">
+      <p class="shop-loading">Loading products...</p>
+    </div>
   </div>
 
   <script src="js/cart-modal.js"></script>
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileMenu.style.display === 'flex';
-      mobileMenu.style.display = isOpen ? 'none' : 'flex';
-      hamburger.textContent = isOpen ? '☰' : '✕';
+  <script type="module">
+    import { getActiveProducts, seedProductsIfEmpty } from "./js/firebase.js";
+
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburger.addEventListener("click", () => {
+      const isOpen = mobileMenu.style.display === "flex";
+      mobileMenu.style.display = isOpen ? "none" : "flex";
+      hamburger.textContent = isOpen ? "☰" : "✕";
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => { mobileMenu.style.display = 'none'; hamburger.textContent = '☰'; });
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.style.display = "none";
+        hamburger.textContent = "☰";
+      });
     });
+
+    const CAT_META = {
+      hats: { id: "hats", title: "Hats" },
+      tshirts: { id: "tshirts", title: "T-Shirts" },
+      hoodies: { id: "hoodies", title: "Hoodies & Outerwear" },
+      pants: { id: "pants", title: "Pants" }
+    };
+
+    function cardHtml(p) {
+      const stock = Number(p.stock) || 0;
+      const out = stock <= 0;
+      const img = p.img || "";
+      const btn = out
+        ? `<button class="add-btn" disabled>Out of stock</button>`
+        : `<button class="add-btn" onclick="addToCart('${p.id}','${String(p.name).replace(/'/g, "\\'")}',${p.price},'${img}')">Add to Cart</button>`;
+      const mbtn = out
+        ? `<button class="mobile-add" disabled>Out of stock</button>`
+        : `<button class="mobile-add" onclick="addToCart('${p.id}','${String(p.name).replace(/'/g, "\\'")}',${p.price},'${img}')">Add to Cart</button>`;
+
+      return `
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="${img}" alt="${p.name}" onerror="this.style.opacity=0.3">
+            <span class="stock-badge ${out ? "out" : ""}">${out ? "Sold out" : stock + " left"}</span>
+            <div class="overlay">${btn}</div>
+          </div>
+          <div class="info">
+            <div class="info-top">
+              <h3>${p.name}</h3>
+              <p class="price">R${p.price}</p>
+            </div>
+            ${mbtn}
+          </div>
+        </div>`;
+    }
+
+    async function loadShop() {
+      const root = document.getElementById("shopRoot");
+      try {
+        await seedProductsIfEmpty();
+        const products = await getActiveProducts();
+        document.getElementById("productCount").textContent =
+          products.length + " product" + (products.length === 1 ? "" : "s");
+
+        let html = "";
+        for (const key of Object.keys(CAT_META)) {
+          const meta = CAT_META[key];
+          const items = products.filter(
+            (p) => (p.category || "tshirts").toLowerCase() === key
+          );
+          html += `
+            <section class="category" id="${meta.id}">
+              <div class="category-title"><h2>${meta.title}</h2><div class="line"></div></div>
+              <div class="products">
+                ${items.length ? items.map(cardHtml).join("") : '<p class="empty-cat">No items in this category yet.</p>'}
+              </div>
+            </section>`;
+        }
+
+        // Any product with unknown category
+        const known = new Set(Object.keys(CAT_META));
+        const other = products.filter((p) => !known.has((p.category || "").toLowerCase()));
+        if (other.length) {
+          html += `
+            <section class="category" id="other">
+              <div class="category-title"><h2>More</h2><div class="line"></div></div>
+              <div class="products">${other.map(cardHtml).join("")}</div>
+            </section>`;
+        }
+
+        root.innerHTML = html || '<p class="shop-loading">No products yet. Add some in Admin.</p>';
+      } catch (err) {
+        console.error(err);
+        root.innerHTML =
+          '<p class="shop-loading">Could not load products. Check Firebase rules for products read access.<br><br>' +
+          (err.message || "") +
+          "</p>";
+      }
+    }
+
+    loadShop();
   </script>
 </body>
 </html>

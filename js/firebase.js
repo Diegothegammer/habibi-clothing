@@ -14,7 +14,8 @@ import {
   set,
   get,
   push,
-  update
+  update,
+  remove
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -29,6 +30,12 @@ const firebaseConfig = {
 };
 
 export const ADMIN_EMAIL = "diegothegammer1@gmail.com";
+
+/** Shipping: Gauteng R100, other SA provinces R200 */
+export function shippingForProvince(province) {
+  if (!province) return 200;
+  return province.trim().toLowerCase() === "gauteng" ? 100 : 200;
+}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -46,10 +53,10 @@ export {
   set,
   get,
   push,
-  update
+  update,
+  remove
 };
 
-/** Save / update user profile under users/{uid} */
 export async function saveUserProfile(uid, data) {
   await set(ref(db, "users/" + uid), {
     ...data,
@@ -57,13 +64,11 @@ export async function saveUserProfile(uid, data) {
   });
 }
 
-/** Get user profile */
 export async function getUserProfile(uid) {
   const snap = await get(ref(db, "users/" + uid));
   return snap.exists() ? snap.val() : null;
 }
 
-/** Create an order (main list + per-user copy if logged in) */
 export async function createOrder(orderData) {
   const ordersRef = ref(db, "orders");
   const newRef = push(ordersRef);
@@ -76,14 +81,31 @@ export async function createOrder(orderData) {
   };
   await set(newRef, payload);
 
-  // Copy under userOrders/{uid}/{id} so customers can read only their orders
   if (orderData.userId) {
     await set(ref(db, "userOrders/" + orderData.userId + "/" + id), payload);
   }
+
+  // Reduce stock for each item
+  try {
+    const items = orderData.items || [];
+    for (const item of items) {
+      if (!item.id) continue;
+      const pRef = ref(db, "products/" + item.id);
+      const snap = await get(pRef);
+      if (snap.exists()) {
+        const p = snap.val();
+        const qty = item.qty || 1;
+        const next = Math.max(0, (Number(p.stock) || 0) - qty);
+        await update(pRef, { stock: next, updatedAt: new Date().toISOString() });
+      }
+    }
+  } catch (e) {
+    console.warn("Stock update failed", e);
+  }
+
   return id;
 }
 
-/** Get orders for a user from their private path */
 export async function getOrdersForUser(uid) {
   const snap = await get(ref(db, "userOrders/" + uid));
   if (!snap.exists()) return [];
@@ -93,7 +115,6 @@ export async function getOrdersForUser(uid) {
   );
 }
 
-/** Get every order (admin) — includes Firebase key */
 export async function getAllOrders() {
   const snap = await get(ref(db, "orders"));
   if (!snap.exists()) return [];
@@ -103,12 +124,9 @@ export async function getAllOrders() {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
-/** Update order status (main + user copy if present) */
 export async function updateOrderStatus(orderKey, status) {
   const patch = { status, updatedAt: new Date().toISOString() };
   await update(ref(db, "orders/" + orderKey), patch);
-
-  // Keep user copy in sync when possible
   try {
     const snap = await get(ref(db, "orders/" + orderKey));
     if (snap.exists()) {
@@ -120,6 +138,102 @@ export async function updateOrderStatus(orderKey, status) {
   } catch (e) {
     console.warn("Could not sync userOrders status", e);
   }
+}
+
+/* ---------- PRODUCTS ---------- */
+
+export async function getAllProducts() {
+  const snap = await get(ref(db, "products"));
+  if (!snap.exists()) return [];
+  const all = snap.val();
+  return Object.keys(all)
+    .map((key) => ({ ...all[key], id: key }))
+    .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+}
+
+export async function getActiveProducts() {
+  const list = await getAllProducts();
+  return list.filter((p) => p.active !== false);
+}
+
+export async function saveProduct(productId, data) {
+  const payload = {
+    name: data.name,
+    price: Number(data.price) || 0,
+    stock: Number(data.stock) || 0,
+    img: data.img || "",
+    category: data.category || "tshirts",
+    active: data.active !== false,
+    updatedAt: new Date().toISOString()
+  };
+  if (productId) {
+    await update(ref(db, "products/" + productId), payload);
+    return productId;
+  }
+  payload.createdAt = new Date().toISOString();
+  const newRef = push(ref(db, "products"));
+  await set(newRef, payload);
+  return newRef.key;
+}
+
+export async function deleteProduct(productId) {
+  await remove(ref(db, "products/" + productId));
+}
+
+export async function setProductStock(productId, stock) {
+  await update(ref(db, "products/" + productId), {
+    stock: Number(stock) || 0,
+    updatedAt: new Date().toISOString()
+  });
+}
+
+/** Seed default products if the products node is empty */
+export async function seedProductsIfEmpty() {
+  const snap = await get(ref(db, "products"));
+  if (snap.exists()) return false;
+
+  const defaults = [
+    {
+      name: "Habibi Fresh Cap",
+      price: 899,
+      stock: 20,
+      category: "hats",
+      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg"
+    },
+    {
+      name: "Signature Logo Tee",
+      price: 449,
+      stock: 30,
+      category: "tshirts",
+      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg"
+    },
+    {
+      name: "Emirates Bomber Jacket",
+      price: 1499,
+      stock: 10,
+      category: "hoodies",
+      img: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800"
+    },
+    {
+      name: "Sahara Cargo Pants",
+      price: 799,
+      stock: 15,
+      category: "pants",
+      img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"
+    },
+    {
+      name: "Habibi Signature Hoodie",
+      price: 1499,
+      stock: 12,
+      category: "hoodies",
+      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg"
+    }
+  ];
+
+  for (const p of defaults) {
+    await saveProduct(null, { ...p, active: true });
+  }
+  return true;
 }
 
 export function isAdminEmail(email) {
