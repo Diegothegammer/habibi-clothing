@@ -28,7 +28,6 @@
       text-align: center; grid-column: 1 / -1; letter-spacing: 1px;
     }
     h2 { font-size: 1.15rem; margin-bottom: 16px; }
-
     #loadingBox, #blockedBox {
       grid-column: 1 / -1; text-align: center; padding: 48px 20px;
       background: var(--gray); border-radius: 16px; display: none;
@@ -41,15 +40,12 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingBox p, #blockedBox p { opacity: 0.8; max-width: 360px; margin: 0 auto 8px; }
-    #blockedBox h2 { margin-bottom: 10px; }
     #blockedBox a {
       display: inline-block; margin-top: 20px; color: white;
       border: 1px solid #555; padding: 12px 24px; border-radius: 50px; text-decoration: none;
     }
-
     .checkout-main { display: none; }
     .checkout-main.show { display: contents; }
-
     .logged-banner {
       background: #1a2e1a; border: 1px solid #2d5a2d; border-radius: 12px;
       padding: 16px 18px; margin-bottom: 20px; font-size: 0.95rem;
@@ -95,52 +91,34 @@
     .place-order { background: white; color: black; }
     .cancel-btn { background: transparent; color: #ff4d6d; border: 2px solid #ff4d6d; }
     #loggedSection, #guestSection { display: none; }
-
-    /* Success popup */
     #successModal {
       display: none; position: fixed; inset: 0; z-index: 10000;
       align-items: center; justify-content: center; padding: 20px;
     }
     #successModal.open { display: flex; }
-    .sm-backdrop {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-    }
+    .sm-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); }
     .sm-card {
       position: relative; background: #161616; border: 1px solid #333;
-      border-radius: 20px; padding: 32px 24px; max-width: 380px; width: 100%;
-      text-align: center; animation: smIn 0.3s ease;
-    }
-    @keyframes smIn {
-      from { transform: scale(0.92) translateY(12px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
+      border-radius: 20px; padding: 32px 24px; max-width: 380px; width: 100%; text-align: center;
     }
     .sm-icon {
       width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%;
       background: #1a2e1a; border: 2px solid #2ecc71;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; color: #2ecc71;
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #2ecc71;
     }
-    .sm-card h2 { font-size: 1.4rem; margin-bottom: 8px; letter-spacing: 0.5px; }
-    .sm-card .sm-msg { opacity: 0.75; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
-    .sm-details {
-      background: #111; border-radius: 12px; padding: 14px; margin-bottom: 22px;
-      font-size: 0.9rem; text-align: left;
-    }
-    .sm-details div {
-      display: flex; justify-content: space-between; padding: 6px 0;
-      border-bottom: 1px solid #222;
-    }
+    .sm-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
+    .sm-msg { opacity: 0.75; font-size: 0.95rem; margin-bottom: 20px; }
+    .sm-details { background: #111; border-radius: 12px; padding: 14px; margin-bottom: 22px; font-size: 0.9rem; text-align: left; }
+    .sm-details div { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #222; }
     .sm-details div:last-child { border-bottom: none; }
     .sm-details span:first-child { opacity: 0.55; }
     .sm-actions { display: flex; flex-direction: column; gap: 10px; }
-    .sm-actions a, .sm-actions button {
-      display: block; width: 100%; padding: 14px; border-radius: 50px;
-      font-weight: 600; font-size: 0.95rem; text-decoration: none;
-      font-family: inherit; cursor: pointer; border: none; text-align: center;
+    .sm-actions a {
+      display: block; width: 100%; padding: 14px; border-radius: 50px; font-weight: 600;
+      text-decoration: none; text-align: center;
     }
     .sm-primary { background: white; color: black; }
-    .sm-secondary { background: transparent; color: white; border: 1px solid #555 !important; }
-
+    .sm-secondary { background: transparent; color: white; border: 1px solid #555; }
     @media (max-width: 800px) {
       .section { grid-template-columns: 1fr; gap: 28px; padding: 28px 14px 50px; }
       .order-summary { position: static; order: -1; }
@@ -157,41 +135,37 @@
 
   <div class="section">
     <h1>Checkout</h1>
-
     <div id="loadingBox" class="show">
       <div class="spinner"></div>
       <p id="loadingText">Checking location...</p>
-      <p style="font-size:0.85rem;opacity:0.5;">Please wait a moment</p>
     </div>
-
     <div id="blockedBox">
       <h2>South Africa only</h2>
       <p>Habibi Clothing currently delivers only within South Africa.</p>
-      <p style="font-size:0.9rem;opacity:0.6;">If you're in SA and see this by mistake (VPN), turn it off and try again.</p>
       <a href="shop.html">Back to Shop</a>
     </div>
 
     <div class="checkout-main" id="checkoutMain">
       <div>
-        <p class="sa-badge">🇿🇦 Delivering within South Africa only</p>
+        <p class="sa-badge">🇿🇦 SA delivery · Gauteng R100 · Other provinces R200</p>
 
         <div id="loggedSection">
           <div class="logged-banner">
             ✅ Logged in as <strong id="userNameDisplay"></strong>
             <div class="logged-details" id="userDetailsDisplay"></div>
-            <div style="margin-top:10px; font-size:0.85rem;"><a href="profile.html">View profile</a></div>
+            <div style="margin-top:10px;font-size:0.85rem"><a href="profile.html">View profile</a></div>
           </div>
           <h2>Confirm Order</h2>
-          <p style="opacity:0.7; margin-bottom:16px; font-size:0.95rem;">Your saved shipping details will be used. Cash on delivery.</p>
+          <p style="opacity:0.7;margin-bottom:16px;font-size:0.95rem">Shipping is based on your saved province. Cash on delivery.</p>
           <div class="btn-row">
-            <button type="button" class="btn place-order" id="placeLoggedBtn">Place Order • Cash on Delivery</button>
+            <button type="button" class="btn place-order" id="placeLoggedBtn">Place Order · Cash on Delivery</button>
             <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel</button>
           </div>
         </div>
 
         <div id="guestSection">
           <div class="guest-note">
-            Have an account? <a href="login.html">Login</a> for faster checkout — or <a href="signup.html">Sign up</a>.
+            Have an account? <a href="login.html">Login</a> — or <a href="signup.html">Sign up</a>.
           </div>
           <h2>Shipping Details</h2>
           <form id="guestForm">
@@ -214,7 +188,7 @@
             </select>
             <input type="text" id="gPostal" placeholder="Postal Code" required>
             <div class="btn-row">
-              <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order • Cash on Delivery</button>
+              <button type="submit" class="btn place-order" id="placeGuestBtn">Place Order · Cash on Delivery</button>
               <button type="button" class="btn cancel-btn" onclick="location.href='cart.html'">Cancel Order</button>
             </div>
           </form>
@@ -225,21 +199,22 @@
         <h2>Order Summary</h2>
         <div id="order-items"></div>
         <div class="total-line"><span>Subtotal</span><span id="subtotal">R0</span></div>
-        <div class="total-line"><span>Shipping (Free)</span><span>R0</span></div>
+        <div class="total-line"><span id="shipLabel">Shipping</span><span id="shipping">R0</span></div>
         <div class="grand-total"><span>Total</span><span id="grand-total">R0</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Success popup -->
   <div id="successModal">
     <div class="sm-backdrop"></div>
     <div class="sm-card">
       <div class="sm-icon">✓</div>
       <h2>Order placed!</h2>
-      <p class="sm-msg">Thank you for shopping with Habibi. We'll process your order soon.</p>
+      <p class="sm-msg">Thank you for shopping with Habibi.</p>
       <div class="sm-details">
         <div><span>Order</span><span id="smOrderId">—</span></div>
+        <div><span>Subtotal</span><span id="smSub">—</span></div>
+        <div><span>Shipping</span><span id="smShip">—</span></div>
         <div><span>Total</span><span id="smTotal">—</span></div>
         <div><span>Payment</span><span>Cash on delivery</span></div>
       </div>
@@ -255,12 +230,14 @@
       auth,
       onAuthStateChanged,
       getUserProfile,
-      createOrder
+      createOrder,
+      shippingForProvince
     } from "./js/firebase.js";
 
     let currentUser = null;
     let profile = null;
-    let cartTotal = 0;
+    let cartSubtotal = 0;
+    let shippingFee = 0;
     let saAllowed = false;
 
     const loadingBox = document.getElementById("loadingBox");
@@ -285,17 +262,26 @@
       checkoutMain.classList.add("show");
     }
 
-    function showSuccessPopup(orderId, total, loggedIn) {
+    function updateTotals(province) {
+      shippingFee = province ? shippingForProvince(province) : 0;
+      const total = cartSubtotal + shippingFee;
+      document.getElementById("subtotal").textContent = "R" + cartSubtotal;
+      document.getElementById("shipping").textContent = province ? "R" + shippingFee : "—";
+      document.getElementById("shipLabel").textContent = province
+        ? (province.toLowerCase() === "gauteng" ? "Shipping (Gauteng)" : "Shipping (" + province + ")")
+        : "Shipping";
+      document.getElementById("grand-total").textContent = province ? "R" + total : "R" + cartSubtotal;
+      return total;
+    }
+
+    function showSuccessPopup(orderId, sub, ship, total, loggedIn) {
       document.getElementById("smOrderId").textContent = "#" + orderId;
+      document.getElementById("smSub").textContent = "R" + sub;
+      document.getElementById("smShip").textContent = "R" + ship;
       document.getElementById("smTotal").textContent = "R" + total;
       const primary = document.getElementById("smPrimaryBtn");
-      if (loggedIn) {
-        primary.href = "profile.html";
-        primary.textContent = "View my orders";
-      } else {
-        primary.href = "index.html";
-        primary.textContent = "Back to home";
-      }
+      primary.href = loggedIn ? "profile.html" : "index.html";
+      primary.textContent = loggedIn ? "View my orders" : "Back to home";
       document.getElementById("successModal").classList.add("open");
     }
 
@@ -309,7 +295,7 @@
           if (code === "ZA") return true;
           if (code) return false;
         }
-      } catch (e) { console.warn("ipapi failed", e); }
+      } catch (e) {}
       try {
         const res2 = await fetch("https://ipwho.is/", { cache: "no-store" });
         if (res2.ok) {
@@ -318,7 +304,7 @@
           if (code2 === "ZA") return true;
           if (code2) return false;
         }
-      } catch (e) { console.warn("ipwho failed", e); }
+      } catch (e) {}
       return true;
     }
 
@@ -329,16 +315,17 @@
     function loadSummary() {
       const cart = getCart();
       const container = document.getElementById("order-items");
-      cartTotal = 0;
+      cartSubtotal = 0;
       container.innerHTML = "";
       if (cart.length === 0) {
-        container.innerHTML = '<p style="opacity:0.7;">Your cart is empty.</p>';
+        container.innerHTML = '<p style="opacity:0.7">Your cart is empty.</p>';
+        updateTotals(null);
         return;
       }
       cart.forEach((item) => {
         const qty = item.qty || 1;
         const line = item.price * qty;
-        cartTotal += line;
+        cartSubtotal += line;
         const color = item.color || "";
         container.innerHTML += `
           <div class="cart-item">
@@ -349,8 +336,6 @@
             </div>
           </div>`;
       });
-      document.getElementById("subtotal").textContent = "R" + cartTotal;
-      document.getElementById("grand-total").textContent = "R" + cartTotal;
     }
 
     async function placeOrder(shipping, userId, userEmail) {
@@ -363,6 +348,9 @@
         alert("Your cart is empty!");
         return;
       }
+      const province = shipping.province;
+      const fee = shippingForProvince(province);
+      const total = cartSubtotal + fee;
 
       const orderId = await createOrder({
         userId: userId || null,
@@ -374,14 +362,20 @@
           color: i.color || null,
           qty: i.qty || 1
         })),
-        total: cartTotal,
+        subtotal: cartSubtotal,
+        shippingFee: fee,
+        total,
         shipping,
         country: "ZA"
       });
 
       localStorage.removeItem("habibiCart");
-      showSuccessPopup(orderId, cartTotal, !!userId);
+      showSuccessPopup(orderId, cartSubtotal, fee, total, !!userId);
     }
+
+    document.getElementById("gProvince")?.addEventListener("change", (e) => {
+      updateTotals(e.target.value || null);
+    });
 
     document.getElementById("placeLoggedBtn").addEventListener("click", async () => {
       if (!profile) {
@@ -408,7 +402,7 @@
       } catch (err) {
         alert("Could not place order: " + (err.message || "Try again"));
         btn.disabled = false;
-        btn.textContent = "Place Order • Cash on Delivery";
+        btn.textContent = "Place Order · Cash on Delivery";
       }
     });
 
@@ -430,7 +424,7 @@
       } catch (err) {
         alert("Could not place order: " + (err.message || "Try again"));
         btn.disabled = false;
-        btn.textContent = "Place Order • Cash on Delivery";
+        btn.textContent = "Place Order · Cash on Delivery";
       }
     });
 
@@ -461,14 +455,13 @@
               (profile.phone || "") + "<br>" +
               (profile.address || "") + ", " + (profile.city || "") + "<br>" +
               (profile.province || "") + ", " + (profile.postal || "");
-          } else {
-            document.getElementById("userDetailsDisplay").innerHTML =
-              "Could not load saved address. <a href='profile.html'>Check profile</a>";
+            updateTotals(profile.province);
           }
           showCheckout();
         } else {
           document.getElementById("loggedSection").style.display = "none";
           document.getElementById("guestSection").style.display = "block";
+          updateTotals(document.getElementById("gProvince").value || null);
           showCheckout();
         }
       });
