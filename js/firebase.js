@@ -31,7 +31,6 @@ const firebaseConfig = {
 
 export const ADMIN_EMAIL = "diegothegammer1@gmail.com";
 
-/** Shipping: Gauteng R100, other SA provinces R200 */
 export function shippingForProvince(province) {
   if (!province) return 200;
   return province.trim().toLowerCase() === "gauteng" ? 100 : 200;
@@ -85,7 +84,6 @@ export async function createOrder(orderData) {
     await set(ref(db, "userOrders/" + orderData.userId + "/" + id), payload);
   }
 
-  // Reduce stock for each item
   try {
     const items = orderData.items || [];
     for (const item of items) {
@@ -140,8 +138,6 @@ export async function updateOrderStatus(orderKey, status) {
   }
 }
 
-/* ---------- PRODUCTS ---------- */
-
 export async function getAllProducts() {
   const snap = await get(ref(db, "products"));
   if (!snap.exists()) return [];
@@ -157,11 +153,13 @@ export async function getActiveProducts() {
 }
 
 export async function saveProduct(productId, data) {
+  const img = data.img || "";
   const payload = {
     name: data.name,
     price: Number(data.price) || 0,
     stock: Number(data.stock) || 0,
-    img: data.img || "",
+    img,
+    imgBack: data.imgBack || img,
     category: data.category || "tshirts",
     active: data.active !== false,
     updatedAt: new Date().toISOString()
@@ -187,7 +185,6 @@ export async function setProductStock(productId, stock) {
   });
 }
 
-/** Seed default products if the products node is empty */
 export async function seedProductsIfEmpty() {
   const snap = await get(ref(db, "products"));
   if (snap.exists()) return false;
@@ -231,7 +228,7 @@ export async function seedProductsIfEmpty() {
   ];
 
   for (const p of defaults) {
-    await saveProduct(null, { ...p, active: true });
+    await saveProduct(null, { ...p, imgBack: p.img, active: true });
   }
   return true;
 }
