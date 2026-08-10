@@ -24,17 +24,14 @@
     .denied a { color: #ffd78a; }
     h1 { font-size: 1.7rem; margin-bottom: 6px; }
     .sub { opacity: 0.55; font-size: 0.9rem; margin-bottom: 20px; }
-
     .main-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
     .main-tab {
       padding: 10px 18px; border-radius: 50px; border: 1px solid #444;
       background: transparent; color: white; font-family: inherit; font-size: 0.9rem; cursor: pointer;
     }
     .main-tab.active { background: white; color: black; border-color: white; }
-
     .panel { display: none; }
     .panel.show { display: block; }
-
     .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px; }
     .stats-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
     .stat { background: var(--gray); border-radius: 12px; padding: 16px; text-align: center; }
@@ -42,14 +39,12 @@
     .stat .n { font-size: 1.5rem; font-weight: 600; }
     .stat.revenue .n { font-size: 1.8rem; color: #6bffb0; }
     .stat .l { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
-
     .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     .tab {
       padding: 8px 16px; border-radius: 50px; border: 1px solid #444;
       background: transparent; color: white; font-family: inherit; font-size: 0.85rem; cursor: pointer;
     }
     .tab.active { background: white; color: black; border-color: white; }
-
     .order {
       background: var(--gray); border-radius: 14px; padding: 18px; margin-bottom: 14px;
       border-left: 4px solid #666;
@@ -86,11 +81,7 @@
     .btn-ghost { background: transparent; color: white; border: 1px solid #555; }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .empty { text-align: center; padding: 40px 16px; opacity: 0.5; }
-
-    /* Products */
-    .prod-form {
-      background: var(--gray); border-radius: 14px; padding: 20px; margin-bottom: 24px;
-    }
+    .prod-form { background: var(--gray); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
     .prod-form h2 { font-size: 1.1rem; margin-bottom: 14px; }
     .prod-form label { display: block; font-size: 0.8rem; opacity: 0.6; margin: 10px 0 4px; }
     .prod-form input, .prod-form select {
@@ -103,9 +94,7 @@
       background: var(--gray); border-radius: 14px; padding: 14px; margin-bottom: 12px;
       display: grid; grid-template-columns: 72px 1fr; gap: 14px; align-items: start;
     }
-    .prod-card img {
-      width: 72px; height: 72px; object-fit: cover; border-radius: 10px; background: #222;
-    }
+    .prod-card img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; background: #222; }
     .prod-card h3 { font-size: 1rem; margin-bottom: 4px; }
     .prod-meta { font-size: 0.85rem; opacity: 0.7; line-height: 1.45; }
     .prod-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
@@ -114,7 +103,6 @@
       width: 80px; padding: 8px; background: #111; border: 1px solid #444;
       color: white; border-radius: 8px; font-family: inherit;
     }
-
     @media (max-width: 600px) {
       .stats, .stats-row2, .form-row { grid-template-columns: 1fr; }
       .stat.revenue { grid-column: auto; }
@@ -155,7 +143,7 @@
     let allOrders = [];
     let allProducts = [];
     let orderFilter = "pending";
-    let mainTab = "orders"; // orders | products
+    let mainTab = "orders";
     let editingId = null;
 
     function formatDate(iso) {
@@ -325,8 +313,10 @@
             <option value="hoodies" ${edit?.category === "hoodies" ? "selected" : ""}>Hoodies & Outerwear</option>
             <option value="pants" ${edit?.category === "pants" ? "selected" : ""}>Pants</option>
           </select>
-          <label>Image URL (link to photo)</label>
-          <input type="url" id="pImg" value="${edit ? edit.img || "" : ""}" placeholder="https://...jpg">
+          <label>Front image URL</label>
+          <input type="url" id="pImg" value="${edit ? edit.img || "" : ""}" placeholder="https://...front.jpg">
+          <label>Back image URL (optional — uses front if empty)</label>
+          <input type="url" id="pImgBack" value="${edit ? edit.imgBack || "" : ""}" placeholder="https://...back.jpg">
           <div class="form-actions">
             <button class="btn btn-primary" id="saveProductBtn">${edit ? "Save changes" : "Add product"}</button>
             ${edit ? '<button class="btn btn-ghost" id="cancelEditBtn">Cancel</button>' : ""}
@@ -370,13 +360,14 @@
         const stock = document.getElementById("pStock").value;
         const category = document.getElementById("pCategory").value;
         const img = document.getElementById("pImg").value.trim();
+        const imgBack = document.getElementById("pImgBack").value.trim() || img;
         if (!name) return alert("Name is required");
-        if (!img) return alert("Image URL is required");
+        if (!img) return alert("Front image URL is required");
         const btn = document.getElementById("saveProductBtn");
         btn.disabled = true;
         btn.textContent = "Saving...";
         try {
-          await saveProduct(editingId, { name, price, stock, category, img, active: true });
+          await saveProduct(editingId, { name, price, stock, category, img, imgBack, active: true });
           editingId = null;
           await loadProducts();
         } catch (err) {
@@ -444,8 +435,7 @@
         if (mainTab === "products") renderProducts();
       } catch (err) {
         document.getElementById("panelProducts").innerHTML =
-          '<p class="empty">Could not load products. Update Firebase rules for products.<br>' +
-          (err.message || "") + "</p>";
+          '<p class="empty">Could not load products.<br>' + (err.message || "") + "</p>";
       }
     }
 
