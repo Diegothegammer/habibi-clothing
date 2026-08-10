@@ -55,19 +55,23 @@
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.45); }
-    .img-wrap { position: relative; overflow: hidden; aspect-ratio: 3 / 4; background: #151515; }
+    .img-wrap {
+      position: relative; overflow: hidden; aspect-ratio: 3 / 4; background: #151515;
+      cursor: pointer;
+    }
     .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .stock-badge {
       position: absolute; top: 10px; left: 10px; font-size: 0.7rem; font-weight: 600;
-      padding: 4px 10px; border-radius: 50px; background: rgba(0,0,0,0.7);
+      padding: 4px 10px; border-radius: 50px; background: rgba(0,0,0,0.7); z-index: 2;
     }
     .stock-badge.out { background: #5a1520; color: #ff8a95; }
     .overlay {
       position: absolute; inset: 0; background: rgba(0,0,0,0.45);
       display: flex; align-items: flex-end; justify-content: center; padding: 20px;
-      opacity: 0; transition: opacity 0.3s;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
     }
     .product-card:hover .overlay { opacity: 1; }
+    .overlay .add-btn { pointer-events: auto; }
     .overlay .add-btn, .mobile-add {
       width: 100%; max-width: 200px; background: white; color: black; padding: 13px 16px;
       border: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
@@ -78,12 +82,85 @@
     .price { font-size: 1.15rem; font-weight: 600; }
     .mobile-add { display: none; margin-top: 12px; width: 100%; max-width: none; }
     .empty-cat { opacity: 0.4; padding: 12px 0; }
-    .shop-loading { text-align: center; padding: 60px 20px; opacity: 0.6; grid-column: 1 / -1; }
+    .shop-loading { text-align: center; padding: 60px 20px; opacity: 0.6; }
     .mobile-menu {
       display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
       padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
     }
     .mobile-menu a { color: white; text-decoration: none; font-size: 1.15rem; padding: 14px 12px; }
+
+    /* Product detail popup */
+    #productModal {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      align-items: flex-end; justify-content: center;
+    }
+    #productModal.open { display: flex; }
+    .pm-backdrop {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    }
+    .pm-sheet {
+      position: relative; width: 100%; max-width: 440px; max-height: 92vh;
+      background: #141414; border-radius: 20px 20px 0 0; border: 1px solid #333; border-bottom: none;
+      overflow: auto; padding-bottom: 24px; animation: pmUp 0.28s ease;
+    }
+    @keyframes pmUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .pm-close {
+      position: absolute; top: 12px; right: 12px; z-index: 5;
+      background: rgba(0,0,0,0.55); border: none; color: white; width: 36px; height: 36px;
+      border-radius: 50%; font-size: 1.1rem; cursor: pointer;
+    }
+    .pm-img-wrap {
+      position: relative; aspect-ratio: 3 / 4; background: #0d0d0d; overflow: hidden;
+    }
+    .pm-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .pm-side-tabs {
+      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; background: rgba(0,0,0,0.65); padding: 4px;
+      border-radius: 50px; border: 1px solid #333;
+    }
+    .pm-side-tabs button {
+      border: none; background: transparent; color: #aaa; padding: 8px 16px;
+      border-radius: 50px; font-family: inherit; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer;
+    }
+    .pm-side-tabs button.active { background: white; color: black; }
+    .pm-body { padding: 18px 20px 0; }
+    .pm-body h2 { font-size: 1.25rem; margin-bottom: 4px; }
+    .pm-price { font-size: 1.3rem; font-weight: 600; margin-bottom: 16px; }
+    .pm-label {
+      font-size: 0.75rem; opacity: 0.55; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 10px;
+    }
+    .pm-colors { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .pm-swatch {
+      width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent;
+      cursor: pointer; position: relative; padding: 0;
+    }
+    .pm-swatch.selected { border-color: #fff; box-shadow: 0 0 0 2px #000; }
+    .pm-swatch span {
+      position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+      font-size: 0.65rem; white-space: nowrap; opacity: 0.7;
+    }
+    .pm-colors { margin-bottom: 36px; }
+    .pm-add {
+      width: 100%; padding: 15px; background: white; color: black; border: none;
+      border-radius: 50px; font-weight: 600; font-size: 1.05rem; cursor: pointer;
+      font-family: inherit;
+    }
+    .pm-add:disabled { opacity: 0.45; cursor: not-allowed; }
+    .pm-stock { font-size: 0.85rem; opacity: 0.55; margin-top: 10px; text-align: center; }
+
+    @media (min-width: 600px) {
+      #productModal { align-items: center; }
+      .pm-sheet {
+        border-radius: 16px; border: 1px solid #333; margin: 16px; max-height: 90vh;
+      }
+    }
     @media (max-width: 900px) { .products { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -135,9 +212,41 @@
     </div>
   </div>
 
+  <!-- Product detail modal -->
+  <div id="productModal">
+    <div class="pm-backdrop" id="pmBackdrop"></div>
+    <div class="pm-sheet">
+      <button type="button" class="pm-close" id="pmClose" aria-label="Close">✕</button>
+      <div class="pm-img-wrap">
+        <img id="pmImg" src="" alt="">
+        <div class="pm-side-tabs">
+          <button type="button" class="active" data-side="front">Front</button>
+          <button type="button" data-side="back">Back</button>
+        </div>
+      </div>
+      <div class="pm-body">
+        <h2 id="pmName"></h2>
+        <p class="pm-price" id="pmPrice"></p>
+        <p class="pm-label">Colour</p>
+        <div class="pm-colors" id="pmColors"></div>
+        <button type="button" class="pm-add" id="pmAdd">Add to Cart</button>
+        <p class="pm-stock" id="pmStock"></p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/cart-modal.js"></script>
   <script type="module">
     import { getActiveProducts, seedProductsIfEmpty } from "./js/firebase.js";
+
+    const COLORS = [
+      { id: "black", label: "Black", hex: "#0a0a0a", border: "#555" },
+      { id: "white", label: "White", hex: "#f5f5f5", border: "#ccc" },
+      { id: "dark-blue", label: "Dark Blue", hex: "#1a2744", border: "#3a5080" }
+    ];
+
+    let productMap = {};
+    let current = null; // { product, side, color }
 
     const hamburger = document.getElementById("hamburger");
     const mobileMenu = document.getElementById("mobileMenu");
@@ -160,20 +269,24 @@
       pants: { id: "pants", title: "Pants" }
     };
 
+    function esc(s) {
+      return String(s || "").replace(/'/g, "\\'");
+    }
+
     function cardHtml(p) {
       const stock = Number(p.stock) || 0;
       const out = stock <= 0;
       const img = p.img || "";
       const btn = out
         ? `<button class="add-btn" disabled>Out of stock</button>`
-        : `<button class="add-btn" onclick="addToCart('${p.id}','${String(p.name).replace(/'/g, "\\'")}',${p.price},'${img}')">Add to Cart</button>`;
+        : `<button class="add-btn" onclick="event.stopPropagation();addToCart('${p.id}','${esc(p.name)}',${p.price},'${img}')">Add to Cart</button>`;
       const mbtn = out
         ? `<button class="mobile-add" disabled>Out of stock</button>`
-        : `<button class="mobile-add" onclick="addToCart('${p.id}','${String(p.name).replace(/'/g, "\\'")}',${p.price},'${img}')">Add to Cart</button>`;
+        : `<button class="mobile-add" onclick="addToCart('${p.id}','${esc(p.name)}',${p.price},'${img}')">Add to Cart</button>`;
 
       return `
         <div class="product-card">
-          <div class="img-wrap">
+          <div class="img-wrap" data-open="${p.id}" title="View details">
             <img src="${img}" alt="${p.name}" onerror="this.style.opacity=0.3">
             <span class="stock-badge ${out ? "out" : ""}">${out ? "Sold out" : stock + " left"}</span>
             <div class="overlay">${btn}</div>
@@ -188,11 +301,121 @@
         </div>`;
     }
 
+    function updateModalImage() {
+      if (!current) return;
+      const p = current.product;
+      const front = p.img || "";
+      const back = p.imgBack || p.img || front;
+      document.getElementById("pmImg").src = current.side === "back" ? back : front;
+    }
+
+    function openProduct(id) {
+      const p = productMap[id];
+      if (!p) return;
+      current = { product: p, side: "front", color: "black" };
+
+      document.getElementById("pmName").textContent = p.name;
+      document.getElementById("pmPrice").textContent = "R" + p.price;
+      const stock = Number(p.stock) || 0;
+      document.getElementById("pmStock").textContent =
+        stock <= 0 ? "Sold out" : stock + " in stock";
+
+      document.querySelectorAll(".pm-side-tabs button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.side === "front");
+      });
+
+      const colorsEl = document.getElementById("pmColors");
+      colorsEl.innerHTML = "";
+      COLORS.forEach((c, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pm-swatch" + (i === 0 ? " selected" : "");
+        btn.style.background = c.hex;
+        btn.style.borderColor = i === 0 ? "#fff" : c.border;
+        btn.dataset.color = c.id;
+        btn.innerHTML = `<span>${c.label}</span>`;
+        btn.addEventListener("click", () => {
+          colorsEl.querySelectorAll(".pm-swatch").forEach((s) => {
+            s.classList.remove("selected");
+            const col = COLORS.find((x) => x.id === s.dataset.color);
+            s.style.borderColor = col ? col.border : "#555";
+          });
+          btn.classList.add("selected");
+          btn.style.borderColor = "#fff";
+          current.color = c.id;
+          // Later: switch image per colour when you add colour-specific photos
+        });
+        colorsEl.appendChild(btn);
+      });
+
+      const addBtn = document.getElementById("pmAdd");
+      addBtn.disabled = stock <= 0;
+      addBtn.textContent = stock <= 0 ? "Out of stock" : "Add to Cart";
+
+      updateModalImage();
+      document.getElementById("productModal").classList.add("open");
+    }
+
+    function closeProduct() {
+      document.getElementById("productModal").classList.remove("open");
+      current = null;
+    }
+
+    document.getElementById("pmBackdrop").addEventListener("click", closeProduct);
+    document.getElementById("pmClose").addEventListener("click", closeProduct);
+
+    document.querySelectorAll(".pm-side-tabs button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!current) return;
+        current.side = btn.dataset.side;
+        document.querySelectorAll(".pm-side-tabs button").forEach((b) => {
+          b.classList.toggle("active", b === btn);
+        });
+        updateModalImage();
+      });
+    });
+
+    document.getElementById("pmAdd").addEventListener("click", () => {
+      if (!current || (Number(current.product.stock) || 0) <= 0) return;
+      const p = current.product;
+      const colorLabel = (COLORS.find((c) => c.id === current.color) || COLORS[0]).label;
+      // Open existing cart modal with preselected colour by pushing directly then toast,
+      // or use addToCart then user picks again — better: push with colour
+      const cart = JSON.parse(localStorage.getItem("habibiCart") || "[]");
+      const existing = cart.find((i) => i.id === p.id && i.color === colorLabel);
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+      } else {
+        cart.push({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          img: p.img,
+          color: colorLabel,
+          qty: 1
+        });
+      }
+      localStorage.setItem("habibiCart", JSON.stringify(cart));
+      if (typeof window.updateCartCount === "function") window.updateCartCount();
+      closeProduct();
+      const toast = document.createElement("div");
+      toast.textContent = p.name + " (" + colorLabel + ") added";
+      toast.style.cssText =
+        "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:12px 24px;border-radius:50px;font-weight:600;z-index:10001;font-size:0.95rem;";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 1600);
+    });
+
     async function loadShop() {
       const root = document.getElementById("shopRoot");
       try {
         await seedProductsIfEmpty();
         const products = await getActiveProducts();
+        productMap = {};
+        products.forEach((p) => {
+          productMap[p.id] = p;
+        });
+
         document.getElementById("productCount").textContent =
           products.length + " product" + (products.length === 1 ? "" : "s");
 
@@ -211,7 +434,6 @@
             </section>`;
         }
 
-        // Any product with unknown category
         const known = new Set(Object.keys(CAT_META));
         const other = products.filter((p) => !known.has((p.category || "").toLowerCase()));
         if (other.length) {
@@ -223,10 +445,17 @@
         }
 
         root.innerHTML = html || '<p class="shop-loading">No products yet. Add some in Admin.</p>';
+
+        root.querySelectorAll("[data-open]").forEach((el) => {
+          el.addEventListener("click", (e) => {
+            if (e.target.closest(".add-btn")) return;
+            openProduct(el.dataset.open);
+          });
+        });
       } catch (err) {
         console.error(err);
         root.innerHTML =
-          '<p class="shop-loading">Could not load products. Check Firebase rules for products read access.<br><br>' +
+          '<p class="shop-loading">Could not load products.<br><br>' +
           (err.message || "") +
           "</p>";
       }
