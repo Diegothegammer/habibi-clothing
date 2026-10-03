@@ -1,1 +1,176 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms & Conditions - HABIBI CLOTHING</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+    :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; line-height: 1.7; }
+    header {
+      background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
+      padding: 14px 16px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
+    }
+    .nav-container {
+      max-width: 1300px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: 2px; white-space: nowrap; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .cart-link { color: white; font-size: 1.35rem; position: relative; text-decoration: none; padding: 6px; }
+    #cart-count {
+      position: absolute; top: -4px; right: -6px; background: #c41e3a; color: white;
+      font-size: 0.7rem; min-width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 0 4px;
+    }
+    .hamburger { display: none; font-size: 1.6rem; cursor: pointer; color: white; background: none; border: none; padding: 8px; line-height: 1; }
+    .mobile-menu {
+      display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
+      padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
+    }
+    .mobile-menu a { color: white; text-decoration: none; font-size: 1.15rem; padding: 14px 12px; border-radius: 10px; }
+    .section { padding: 48px 20px 80px; max-width: 780px; margin: 0 auto; }
+    h1 { font-size: clamp(1.8rem, 6vw, 2.8rem); letter-spacing: 1px; margin-bottom: 8px; }
+    .updated { font-size: 0.9rem; opacity: 0.55; margin-bottom: 36px; }
+    h2 { font-size: 1.2rem; margin: 32px 0 12px; letter-spacing: 0.5px; }
+    p, li { font-size: 0.95rem; opacity: 0.9; margin-bottom: 12px; }
+    ul { padding-left: 22px; margin-bottom: 16px; }
+    a { color: #ccc; }
+    footer { background: #000; text-align: center; padding: 40px 20px; font-size: 0.9rem; opacity: 0.7; }
+    footer a { color: #aaa; text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: white; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="logo">HABIBI</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a href="cart.html" class="cart-link">🛒<span id="cart-count">0</span></a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
+    </div>
+  </header>
+
+  <div class="section">
+    <h1>Terms & Conditions</h1>
+    <p class="updated">Last updated: 3 October 2026</p>
+
+    <p>Welcome to Habibi Clothing. By accessing or purchasing from our website <strong>diegothegammer.github.io/habibi-clothing</strong> (the “Site”), you agree to these Terms & Conditions. Please read them carefully.</p>
+
+    <h2>1. About Us</h2>
+    <p>Habibi Clothing is a Pretoria-based streetwear brand. These terms govern your use of the Site and any orders you place with us.</p>
+
+    <h2>2. Eligibility</h2>
+    <p>You must be at least 18 years old (or have parental/guardian consent) to place an order. By ordering you confirm that the information you provide is accurate and complete.</p>
+
+    <h2>3. Products & Pricing</h2>
+    <ul>
+      <li>All prices are listed in South African Rand (ZAR) and include applicable VAT unless otherwise stated.</li>
+      <li>We reserve the right to change prices at any time. The price charged is the price displayed at the time you complete checkout.</li>
+      <li>Product images are for illustration. Slight variations in colour or detail may occur due to manufacturing or screen differences.</li>
+      <li>Stock levels are indicative. We may limit quantities or cancel orders if an item is unavailable.</li>
+    </ul>
+
+    <h2>4. Orders & Payment</h2>
+    <ul>
+      <li>Placing an order constitutes an offer to buy. We reserve the right to accept or decline any order.</li>
+      <li>Payment must be made in full at checkout using the payment methods we offer.</li>
+      <li>An order confirmation (email or on-screen message) does not guarantee acceptance until we process and confirm the order.</li>
+    </ul>
+
+    <h2>5. Shipping & Delivery</h2>
+    <ul>
+      <li>We currently ship within South Africa. Delivery times are estimates and may vary.</li>
+      <li>Risk of loss passes to you once the order is handed to the courier. Please check your parcel on receipt and report any damage promptly.</li>
+      <li>Incorrect or incomplete addresses may cause delays or failed delivery. Additional charges may apply for re-delivery.</li>
+    </ul>
+
+    <h2>6. Returns & Exchanges</h2>
+    <ul>
+      <li>You may request a return or exchange of unworn, unwashed items in original condition with tags attached within 7 days of delivery.</li>
+      <li>Sale / clearance items and customised pieces are generally non-returnable unless faulty.</li>
+      <li>To start a return, contact us via the <a href="contact.html">Contact</a> page with your order details. Approved returns must be shipped back at your cost unless the item is faulty or we made an error.</li>
+      <li>Refunds (where applicable) are issued to the original payment method after we inspect the returned goods.</li>
+    </ul>
+
+    <h2>7. Intellectual Property</h2>
+    <p>All content on the Site — including logos, designs, product images, text, and branding — is owned by Habibi Clothing or its licensors. You may not copy, reproduce, or use any of it for commercial purposes without our prior written consent.</p>
+
+    <h2>8. User Accounts</h2>
+    <p>You are responsible for keeping your login details secure. Any activity under your account is your responsibility. Notify us immediately if you suspect unauthorised access.</p>
+
+    <h2>9. Limitation of Liability</h2>
+    <p>To the fullest extent permitted by South African law:</p>
+    <ul>
+      <li>We are not liable for indirect, incidental, or consequential losses arising from use of the Site or products.</li>
+      <li>Our total liability for any claim related to an order is limited to the amount you paid for that order.</li>
+      <li>Nothing in these terms excludes liability for death, personal injury, or fraud where such exclusion is not allowed by law.</li>
+    </ul>
+
+    <h2>10. Acceptable Use</h2>
+    <p>You agree not to misuse the Site (including attempting to hack, scrape, or disrupt services, or using it for unlawful purposes).</p>
+
+    <h2>11. Governing Law</h2>
+    <p>These Terms are governed by the laws of the Republic of South Africa. Any disputes will be subject to the exclusive jurisdiction of the courts of South Africa.</p>
+
+    <h2>12. Changes</h2>
+    <p>We may update these Terms from time to time. The “Last updated” date will change accordingly. Continued use of the Site after updates means you accept the revised terms.</p>
+
+    <h2>13. Contact</h2>
+    <p>Questions about these Terms? Reach us via the <a href="contact.html">Contact</a> page.</p>
+    <p><strong>Habibi Clothing</strong><br>Pretoria, South Africa</p>
+  </div>
+
+  <footer>
+    <p>© 2026 Habibi Clothing • Pretoria, South Africa</p>
+    <p style="margin-top:12px">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </p>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.style.display === 'flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      hamburger.textContent = isOpen ? '☰' : '✕';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        hamburger.textContent = '☰';
+      });
+    });
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = cart.reduce((s, i) => s + (i.qty || 1), 0);
+    }
+    window.onload = updateCartCount;
+  </script>
+</body>
+</html>
