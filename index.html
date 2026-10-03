@@ -52,6 +52,8 @@
       width: 100%; background: white; color: black; padding: 12px; border: none;
       border-radius: 50px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
     }
+    .add-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .featured-loading { text-align: center; opacity: 0.55; padding: 20px; grid-column: 1 / -1; }
     .mobile-menu {
       display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
       padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
@@ -106,31 +108,8 @@
 
   <div class="section">
     <h2>Featured Drops</h2>
-    <div class="products">
-      <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg" alt="Habibi Fresh Cap">
-        <div class="info">
-          <h3>Habibi Fresh Cap</h3>
-          <p class="price">R899</p>
-          <button class="add-btn" onclick="addToCart(1,'Habibi Fresh Cap',899,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg')">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg" alt="Signature Logo Tee">
-        <div class="info">
-          <h3>Signature Logo Tee</h3>
-          <p class="price">R449</p>
-          <button class="add-btn" onclick="addToCart(2,'Signature Logo Tee',449,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg')">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg" alt="Habibi Signature Hoodie">
-        <div class="info">
-          <h3>Habibi Signature Hoodie</h3>
-          <p class="price">R1499</p>
-          <button class="add-btn" onclick="addToCart(3,'Habibi Signature Hoodie',1499,'https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg')">Add to Cart</button>
-        </div>
-      </div>
+    <div class="products" id="featuredProducts">
+      <p class="featured-loading">Loading drops...</p>
     </div>
   </div>
 
@@ -146,7 +125,8 @@
 
   <script src="js/cart-modal.js"></script>
   <script type="module">
-    import { auth, onAuthStateChanged } from "./js/firebase.js";
+    import { auth, onAuthStateChanged, getFeaturedProducts, seedProductsIfEmpty } from "./js/firebase.js";
+
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     hamburger.addEventListener('click', () => {
@@ -165,6 +145,42 @@
         if (a) { a.href = href; a.textContent = text; }
       });
     });
+
+    function esc(s) {
+      return String(s || "").replace(/'/g, "\\'");
+    }
+
+    async function loadFeatured() {
+      const root = document.getElementById('featuredProducts');
+      try {
+        await seedProductsIfEmpty();
+        const products = await getFeaturedProducts(3);
+        if (!products.length) {
+          root.innerHTML = '<p class="featured-loading">No featured products yet. Mark products as Featured in Admin.</p>';
+          return;
+        }
+        root.innerHTML = products.map((p) => {
+          const out = (Number(p.stock) || 0) <= 0;
+          const img = p.img || '';
+          const btn = out
+            ? '<button class="add-btn" disabled>Out of stock</button>'
+            : `<button class="add-btn" onclick="addToCart('${p.id}','${esc(p.name)}',${p.price},'${img}')">Add to Cart</button>`;
+          return `
+            <div class="product-card">
+              <img src="${img}" alt="${p.name}" onerror="this.style.opacity=0.3">
+              <div class="info">
+                <h3>${p.name}</h3>
+                <p class="price">R${p.price}</p>
+                ${btn}
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        root.innerHTML = '<p class="featured-loading">Could not load products.</p>';
+      }
+    }
+    loadFeatured();
   </script>
 </body>
 </html>
