@@ -152,6 +152,14 @@ export async function getActiveProducts() {
   return list.filter((p) => p.active !== false);
 }
 
+/** Featured products for homepage. Falls back to first 3 active if none marked featured. */
+export async function getFeaturedProducts(limit = 3) {
+  const list = await getActiveProducts();
+  const featured = list.filter((p) => p.featured === true);
+  if (featured.length) return featured.slice(0, limit);
+  return list.slice(0, limit);
+}
+
 export async function saveProduct(productId, data) {
   const img = data.img || "";
   const payload = {
@@ -162,6 +170,7 @@ export async function saveProduct(productId, data) {
     imgBack: data.imgBack || img,
     category: data.category || "tshirts",
     active: data.active !== false,
+    featured: data.featured === true,
     updatedAt: new Date().toISOString()
   };
   if (productId) {
@@ -195,6 +204,7 @@ export async function seedProductsIfEmpty() {
       price: 899,
       stock: 20,
       category: "hats",
+      featured: true,
       img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg"
     },
     {
@@ -202,6 +212,7 @@ export async function seedProductsIfEmpty() {
       price: 449,
       stock: 30,
       category: "tshirts",
+      featured: true,
       img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg"
     },
     {
@@ -209,6 +220,7 @@ export async function seedProductsIfEmpty() {
       price: 1499,
       stock: 10,
       category: "hoodies",
+      featured: false,
       img: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800"
     },
     {
@@ -216,6 +228,7 @@ export async function seedProductsIfEmpty() {
       price: 799,
       stock: 15,
       category: "pants",
+      featured: false,
       img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"
     },
     {
@@ -223,6 +236,7 @@ export async function seedProductsIfEmpty() {
       price: 1499,
       stock: 12,
       category: "hoodies",
+      featured: true,
       img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg"
     }
   ];
@@ -231,6 +245,44 @@ export async function seedProductsIfEmpty() {
     await saveProduct(null, { ...p, imgBack: p.img, active: true });
   }
   return true;
+}
+
+// ——— Contact messages ———
+export async function submitContactMessage(data) {
+  const messagesRef = ref(db, "contactMessages");
+  const newRef = push(messagesRef);
+  const id = newRef.key;
+  const payload = {
+    id,
+    name: (data.name || "").trim(),
+    email: (data.email || "").trim(),
+    phone: (data.phone || "").trim(),
+    message: (data.message || "").trim(),
+    status: "new",
+    createdAt: new Date().toISOString()
+  };
+  await set(newRef, payload);
+  return id;
+}
+
+export async function getAllContactMessages() {
+  const snap = await get(ref(db, "contactMessages"));
+  if (!snap.exists()) return [];
+  const all = snap.val();
+  return Object.keys(all)
+    .map((key) => ({ ...all[key], _key: key }))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+export async function updateContactMessageStatus(key, status) {
+  await update(ref(db, "contactMessages/" + key), {
+    status,
+    updatedAt: new Date().toISOString()
+  });
+}
+
+export async function deleteContactMessage(key) {
+  await remove(ref(db, "contactMessages/" + key));
 }
 
 export function isAdminEmail(email) {
