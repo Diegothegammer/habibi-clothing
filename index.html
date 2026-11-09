@@ -3,7 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HABIBI CLOTHING</title>
+  <title>Habibi Clothing | Desert Luxury Streetwear · Pretoria</title>
+  <meta name="description" content="Habibi Clothing — Pretoria streetwear. Desert luxury meets street royalty. Shop caps, tees, hoodies and more. South Africa delivery.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://diegothegammer.github.io/habibi-clothing/">
+
+  <!-- Open Graph / WhatsApp / Instagram -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diegothegammer.github.io/habibi-clothing/">
+  <meta property="og:title" content="Habibi Clothing | Desert Luxury Streetwear">
+  <meta property="og:description" content="Pretoria streetwear. Desert luxury meets street royalty. Shop the collection.">
+  <meta property="og:image" content="https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg">
+  <meta property="og:site_name" content="Habibi Clothing">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Habibi Clothing | Desert Luxury Streetwear">
+  <meta name="twitter:description" content="Pretoria streetwear. Shop caps, tees, hoodies and more.">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
     :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
@@ -17,7 +33,7 @@
       max-width: 1300px; margin: 0 auto;
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
-    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: 2px; white-space: nowrap; }
+    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.3rem); letter-spacing: 2px; white-space: nowrap; text-decoration: none; color: white; }
     .nav-links { display: flex; gap: 28px; }
     .nav-links a { color: white; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
     .nav-right { display: flex; align-items: center; gap: 14px; }
@@ -31,7 +47,7 @@
     .hamburger { display: none; font-size: 1.6rem; cursor: pointer; color: white; background: none; border: none; padding: 8px; line-height: 1; }
     .hero {
       min-height: 85vh;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a26?w=2000') center/cover;
+      background: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.88)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a26?w=2000') center/cover;
       display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;
     }
     .hero-content h1 { font-size: clamp(2.8rem, 12vw, 7rem); letter-spacing: clamp(2px, 1.5vw, 8px); line-height: 1.1; }
@@ -39,12 +55,14 @@
     .btn {
       display: inline-block; background: transparent; color: white; padding: 14px 36px;
       border: 2px solid white; border-radius: 50px; font-size: 1rem; text-decoration: none;
+      transition: background 0.2s, color 0.2s;
     }
+    .btn:hover { background: white; color: black; }
     .section { padding: 60px 16px; max-width: 1300px; margin: 0 auto; }
     h2 { font-size: clamp(1.8rem, 6vw, 3rem); text-align: center; margin-bottom: 36px; letter-spacing: 2px; }
     .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
     .product-card { background: var(--gray); border-radius: 14px; overflow: hidden; }
-    .product-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
+    .product-card img { width: 100%; height: 280px; object-fit: cover; display: block; background: #151515; }
     .info { padding: 16px; text-align: center; }
     .info h3 { font-size: 1.05rem; margin-bottom: 6px; }
     .price { font-size: 1.35rem; font-weight: 600; margin: 8px 0 14px; }
@@ -53,7 +71,28 @@
       border-radius: 50px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
     }
     .add-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-    .featured-loading { text-align: center; opacity: 0.55; padding: 20px; grid-column: 1 / -1; }
+    .featured-loading, .featured-error {
+      text-align: center; opacity: 0.55; padding: 40px 20px; grid-column: 1 / -1;
+    }
+    .skeleton-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+      grid-column: 1 / -1;
+    }
+    .skeleton-card {
+      background: #1a1a1a; border-radius: 14px; overflow: hidden;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    .skeleton-img { height: 280px; background: #252525; }
+    .skeleton-body { padding: 16px; }
+    .skeleton-line {
+      height: 14px; background: #2a2a2a; border-radius: 6px; margin-bottom: 10px;
+    }
+    .skeleton-line.short { width: 40%; margin: 0 auto 14px; }
+    .skeleton-line.btn { height: 40px; border-radius: 50px; margin-top: 8px; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
     .mobile-menu {
       display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
       padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
@@ -62,20 +101,25 @@
     footer { background: #000; text-align: center; padding: 48px 20px; }
     footer a { color: #aaa; text-decoration: none; margin: 0 10px; font-size: 0.85rem; }
     footer a:hover { color: white; }
+    .social { margin: 18px 0 8px; display: flex; justify-content: center; gap: 18px; }
+    .social a { font-size: 0.9rem; opacity: 0.75; }
+    .social a:hover { opacity: 1; }
     @media (max-width: 768px) {
       .nav-links, .account-link { display: none; }
       .hamburger { display: block; }
-      .products { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .product-card img { height: 200px; }
+      .products, .skeleton-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .product-card img, .skeleton-img { height: 200px; }
       .hero { min-height: 75vh; }
     }
-    @media (max-width: 420px) { .products { grid-template-columns: 1fr; } }
+    @media (max-width: 420px) {
+      .products, .skeleton-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="nav-container">
-      <div class="logo">HABIBI</div>
+      <a href="index.html" class="logo">HABIBI</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
@@ -109,18 +153,26 @@
   <div class="section">
     <h2>Featured Drops</h2>
     <div class="products" id="featuredProducts">
-      <p class="featured-loading">Loading drops...</p>
+      <div class="skeleton-grid" aria-hidden="true">
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line btn"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line btn"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line btn"></div></div></div>
+      </div>
     </div>
   </div>
 
   <footer>
     <p style="font-size:1.5rem;margin-bottom:6px">HABIBI CLOTHING</p>
     <p>Pretoria Streetwear</p>
-    <p style="margin-top:20px">
+    <div class="social">
+      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+    </div>
+    <p style="margin-top:16px">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms & Conditions</a>
     </p>
-    <p style="margin-top:20px;font-size:0.85rem;opacity:0.55">© 2026 Habibi Clothing</p>
+    <p style="margin-top:20px;font-size:0.85rem;opacity:0.55">© 2026 Habibi Clothing · South Africa</p>
   </footer>
 
   <script src="js/cart-modal.js"></script>
@@ -150,6 +202,14 @@
       return String(s || "").replace(/'/g, "\\'");
     }
 
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
     async function loadFeatured() {
       const root = document.getElementById('featuredProducts');
       try {
@@ -162,14 +222,15 @@
         root.innerHTML = products.map((p) => {
           const out = (Number(p.stock) || 0) <= 0;
           const img = p.img || '';
+          const name = escapeHtml(p.name);
           const btn = out
             ? '<button class="add-btn" disabled>Out of stock</button>'
             : `<button class="add-btn" onclick="addToCart('${p.id}','${esc(p.name)}',${p.price},'${img}')">Add to Cart</button>`;
           return `
             <div class="product-card">
-              <img src="${img}" alt="${p.name}" onerror="this.style.opacity=0.3">
+              <img src="${img}" alt="${name} — Habibi Clothing" loading="lazy" onerror="this.style.opacity=0.35">
               <div class="info">
-                <h3>${p.name}</h3>
+                <h3>${name}</h3>
                 <p class="price">R${p.price}</p>
                 ${btn}
               </div>
@@ -177,7 +238,7 @@
         }).join('');
       } catch (err) {
         console.error(err);
-        root.innerHTML = '<p class="featured-loading">Could not load products.</p>';
+        root.innerHTML = '<p class="featured-error">Could not load products. <a href="shop.html" style="color:#fff">Browse the shop</a> instead.</p>';
       }
     }
     loadFeatured();
