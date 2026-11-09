@@ -56,6 +56,45 @@ export {
   remove
 };
 
+// ——— Product cache (faster Home + Shop) ———
+const CACHE_KEY = "habibi_products_v1";
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+let memoryProducts = null;
+let memoryAt = 0;
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { at, products } = JSON.parse(raw);
+    if (!Array.isArray(products) || !at) return null;
+    if (Date.now() - at > CACHE_TTL_MS) return null;
+    return products;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(products) {
+  memoryProducts = products;
+  memoryAt = Date.now();
+  try {
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ at: memoryAt, products })
+    );
+  } catch (_) {}
+}
+
+/** Call after admin saves/deletes a product so UI refreshes. */
+export function invalidateProductCache() {
+  memoryProducts = null;
+  memoryAt = 0;
+  try {
+    localStorage.removeItem(CACHE_KEY);
+  } catch (_) {}
+}
+
 export async function saveUserProfile(uid, data) {
   await set(ref(db, "users/" + uid), {
     ...data,
@@ -97,6 +136,7 @@ export async function createOrder(orderData) {
         await update(pRef, { stock: next, updatedAt: new Date().toISOString() });
       }
     }
+    invalidateProductCache();
   } catch (e) {
     console.warn("Stock update failed", e);
   }
@@ -138,7 +178,7 @@ export async function updateOrderStatus(orderKey, status) {
   }
 }
 
-export async function getAllProducts() {
+async function fetchAllProductsFromDb() {
   const snap = await get(ref(db, "products"));
   if (!snap.exists()) return [];
   const all = snap.val();
@@ -147,14 +187,36 @@ export async function getAllProducts() {
     .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 }
 
-export async function getActiveProducts() {
-  const list = await getAllProducts();
+export async function getAllProducts(opts = {}) {
+  const force = opts.force === true;
+  if (!force) {
+    if (memoryProducts && Date.now() - memoryAt < CACHE_TTL_MS) {
+      return memoryProducts;
+    }
+    const cached = readCache();
+    if (cached) {
+      memoryProducts = cached;
+      memoryAt = Date.now();
+      // Refresh in background without blocking UI
+      fetchAllProductsFromDb()
+        .then((fresh) => writeCache(fresh))
+        .catch(() => {});
+      return cached;
+    }
+  }
+  const list = await fetchAllProductsFromDb();
+  writeCache(list);
+  return list;
+}
+
+export async function getActiveProducts(opts) {
+  const list = await getAllProducts(opts);
   return list.filter((p) => p.active !== false);
 }
 
 /** Featured products for homepage. Falls back to first 3 active if none marked featured. */
-export async function getFeaturedProducts(limit = 3) {
-  const list = await getActiveProducts();
+export async function getFeaturedProducts(limit = 3, opts) {
+  const list = await getActiveProducts(opts);
   const featured = list.filter((p) => p.featured === true);
   if (featured.length) return featured.slice(0, limit);
   return list.slice(0, limit);
@@ -175,16 +237,19 @@ export async function saveProduct(productId, data) {
   };
   if (productId) {
     await update(ref(db, "products/" + productId), payload);
+    invalidateProductCache();
     return productId;
   }
   payload.createdAt = new Date().toISOString();
   const newRef = push(ref(db, "products"));
   await set(newRef, payload);
+  invalidateProductCache();
   return newRef.key;
 }
 
 export async function deleteProduct(productId) {
   await remove(ref(db, "products/" + productId));
+  invalidateProductCache();
 }
 
 export async function setProductStock(productId, stock) {
@@ -192,59 +257,83 @@ export async function setProductStock(productId, stock) {
     stock: Number(stock) || 0,
     updatedAt: new Date().toISOString()
   });
+  invalidateProductCache();
 }
 
+let seedPromise = null;
+
 export async function seedProductsIfEmpty() {
-  const snap = await get(ref(db, "products"));
-  if (snap.exists()) return false;
-
-  const defaults = [
-    {
-      name: "Habibi Fresh Cap",
-      price: 899,
-      stock: 20,
-      category: "hats",
-      featured: true,
-      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg"
-    },
-    {
-      name: "Signature Logo Tee",
-      price: 449,
-      stock: 30,
-      category: "tshirts",
-      featured: true,
-      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg"
-    },
-    {
-      name: "Emirates Bomber Jacket",
-      price: 1499,
-      stock: 10,
-      category: "hoodies",
-      featured: false,
-      img: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800"
-    },
-    {
-      name: "Sahara Cargo Pants",
-      price: 799,
-      stock: 15,
-      category: "pants",
-      featured: false,
-      img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"
-    },
-    {
-      name: "Habibi Signature Hoodie",
-      price: 1499,
-      stock: 12,
-      category: "hoodies",
-      featured: true,
-      img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg"
-    }
-  ];
-
-  for (const p of defaults) {
-    await saveProduct(null, { ...p, imgBack: p.img, active: true });
+  if (memoryProducts && memoryProducts.length) return false;
+  const cached = readCache();
+  if (cached && cached.length) {
+    memoryProducts = cached;
+    memoryAt = Date.now();
+    return false;
   }
-  return true;
+  if (seedPromise) return seedPromise;
+
+  seedPromise = (async () => {
+    const snap = await get(ref(db, "products"));
+    if (snap.exists()) {
+      const list = await fetchAllProductsFromDb();
+      writeCache(list);
+      return false;
+    }
+
+    const defaults = [
+      {
+        name: "Habibi Fresh Cap",
+        price: 899,
+        stock: 20,
+        category: "hats",
+        featured: true,
+        img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa81cd795457.83783842_OCWw9.jpg"
+      },
+      {
+        name: "Signature Logo Tee",
+        price: 449,
+        stock: 30,
+        category: "tshirts",
+        featured: true,
+        img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa7e5591c840.37735287_ooFb51.jpg"
+      },
+      {
+        name: "Emirates Bomber Jacket",
+        price: 1499,
+        stock: 10,
+        category: "hoodies",
+        featured: false,
+        img: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800"
+      },
+      {
+        name: "Sahara Cargo Pants",
+        price: 799,
+        stock: 15,
+        category: "pants",
+        featured: false,
+        img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"
+      },
+      {
+        name: "Habibi Signature Hoodie",
+        price: 1499,
+        stock: 12,
+        category: "hoodies",
+        featured: true,
+        img: "https://d1yei2z3i6k35z.cloudfront.net/11623554/69fa8205110098.48449366_4Vjsh.jpg"
+      }
+    ];
+
+    await Promise.all(
+      defaults.map((p) => saveProduct(null, { ...p, imgBack: p.img, active: true }))
+    );
+    return true;
+  })();
+
+  try {
+    return await seedPromise;
+  } finally {
+    seedPromise = null;
+  }
 }
 
 // ——— Contact messages ———
