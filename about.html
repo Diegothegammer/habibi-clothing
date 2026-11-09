@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - HABIBI CLOTHING</title>
+  <title>About Us | Habibi Clothing — Pretoria Streetwear</title>
+  <meta name="description" content="Habibi Clothing was born in the streets of Pretoria. Bold, resilient streetwear made for those who move different.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="About Habibi Clothing">
+  <meta property="og:description" content="Pretoria streetwear. Desert luxury meets street royalty.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diegothegammer.github.io/habibi-clothing/about.html">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
@@ -42,6 +49,8 @@
       font-size: clamp(1.5rem, 5vw, 2.3rem);
       letter-spacing: 2px;
       white-space: nowrap;
+      text-decoration: none;
+      color: white;
     }
 
     .nav-links { display: flex; gap: 28px; }
@@ -137,6 +146,7 @@
     footer p:first-child { font-size: 1.5rem; margin-bottom: 6px; }
     footer a { color: #aaa; text-decoration: none; margin: 0 10px; font-size: 0.85rem; }
     footer a:hover { color: white; }
+    .social { margin: 18px 0 8px; display: flex; justify-content: center; gap: 18px; }
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -149,7 +159,7 @@
 
   <header>
     <div class="nav-container">
-      <div class="logo">HABIBI</div>
+      <a href="index.html" class="logo">HABIBI</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
@@ -190,6 +200,11 @@
       <strong>This is identity. This is culture. This is Pretoria.</strong>
     </p>
 
+    <p class="story">
+      Desert luxury meets street royalty. We blend clean silhouettes with the energy of the city —
+      caps, tees, hoodies and cargos built to last and made to be seen.
+    </p>
+
     <p style="margin-top: 40px; font-size: 1.05rem; opacity: 0.7; line-height: 1.6;">
       Wallahi, we don’t follow trends.<br>
       We create for the ones who move different.
@@ -199,13 +214,17 @@
   <footer>
     <p>HABIBI CLOTHING</p>
     <p>Pretoria Streetwear</p>
-    <p style="margin-top:20px">
+    <div class="social">
+      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+    </div>
+    <p style="margin-top:16px">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms & Conditions</a>
     </p>
     <p style="margin-top:20px; font-size:0.85rem; opacity:0.55;">
       © 2026 Habibi Clothing. All Rights Reserved.<br>
-      A Pretoria Born Brand • Established 2024
+      A Pretoria Born Brand · Established 2024
     </p>
   </footer>
   
@@ -229,7 +248,7 @@
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('habibiCart')) || [];
       const el = document.getElementById('cart-count');
-      if (el) el.textContent = cart.length;
+      if (el) el.textContent = cart.reduce((s, i) => s + (i.qty || 1), 0);
     }
     window.onload = updateCartCount;
   </script>
