@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - HABIBI CLOTHING</title>
+  <title>Cart | Habibi Clothing</title>
+  <meta name="description" content="Your Habibi Clothing cart.">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
     :root { --black: #0a0a0a; --white: #f8f8f8; --gray: #1f1f1f; }
@@ -16,7 +20,7 @@
       max-width: 1300px; margin: 0 auto;
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
-    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.2rem); letter-spacing: 2px; }
+    .logo { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.2rem); letter-spacing: 2px; text-decoration: none; color: white; }
     .nav-links { display: flex; gap: 28px; }
     .nav-links a { color: white; text-decoration: none; font-size: 0.95rem; }
     .nav-right { display: flex; align-items: center; gap: 16px; }
@@ -32,7 +36,7 @@
     .cart-item {
       display: flex; background: var(--gray); margin-bottom: 14px; border-radius: 12px; overflow: hidden;
     }
-    .cart-item img { width: 110px; min-width: 110px; height: 110px; object-fit: cover; }
+    .cart-item img { width: 110px; min-width: 110px; height: 110px; object-fit: cover; background: #151515; }
     .cart-details { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .cart-details h3 { font-size: 1rem; margin-bottom: 4px; }
     .meta { font-size: 0.85rem; opacity: 0.7; margin-bottom: 6px; }
@@ -46,7 +50,9 @@
       width: 100%; padding: 16px; background: white; color: black; font-size: 1.1rem;
       font-weight: 600; border: none; border-radius: 50px; cursor: pointer;
     }
+    .checkout-btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .empty-msg { text-align: center; font-size: 1.15rem; opacity: 0.8; padding: 40px 10px; }
+    .empty-msg a { color: #fff; }
     .mobile-menu {
       display: none; position: fixed; top: 57px; left: 0; width: 100%; background: #141414;
       padding: 24px 20px 32px; flex-direction: column; gap: 8px; z-index: 999; border-top: 1px solid #333;
@@ -62,7 +68,7 @@
 <body>
   <header>
     <div class="nav-container">
-      <div class="logo">HABIBI</div>
+      <a href="index.html" class="logo">HABIBI</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
@@ -87,7 +93,7 @@
     <h1>Your Cart</h1>
     <div id="cart-items"></div>
     <div class="total">Total: <span id="cart-total">R0</span></div>
-    <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">Proceed to Checkout</button>
   </div>
 
   <script>
@@ -105,16 +111,19 @@
     function loadCart() {
       const cart = JSON.parse(localStorage.getItem('habibiCart') || '[]');
       const container = document.getElementById('cart-items');
+      const btn = document.getElementById('checkoutBtn');
       let total = 0;
       container.innerHTML = '';
 
       if (cart.length === 0) {
-        container.innerHTML = '<p class="empty-msg">Your cart is empty, habibi 😔</p>';
+        container.innerHTML = '<p class="empty-msg">Your cart is empty.<br><a href="shop.html">Browse the shop</a></p>';
         document.getElementById('cart-total').textContent = 'R0';
+        btn.disabled = true;
         updateBadge();
         return;
       }
 
+      btn.disabled = false;
       cart.forEach((item, index) => {
         const qty = item.qty || 1;
         const line = item.price * qty;
@@ -122,9 +131,9 @@
         const color = item.color || '—';
         container.innerHTML += `
           <div class="cart-item">
-            <img src="${item.img}" alt="${item.name}">
+            <img src="${item.img || ''}" alt="${item.name || 'Product'}" loading="lazy" onerror="this.style.opacity=0.3">
             <div class="cart-details">
-              <h3>${item.name}</h3>
+              <h3>${item.name || 'Product'}</h3>
               <div class="meta">${color} · Qty ${qty}</div>
               <p class="line-price">R${line}</p>
               <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
